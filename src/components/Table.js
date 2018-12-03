@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import Table from './components/Table';
-import './App.css';
-
-
-const materials = [
+import '../App.css';
+/*const materials = [
                               {  
                                   'day' : '4',
                                   'name': 'TT',
@@ -60,8 +56,9 @@ const materials = [
   
   
                   ]
+*/
 
-/*class Table extends React.Component {
+class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,7 +126,6 @@ const materials = [
    // console.log(JSON.stringify(this.state.materials));
    
     return (
-
      // this.state.materials.map((row, index) => {
        <tr> 
           <td>
@@ -144,18 +140,4 @@ const materials = [
     )
   }
 }
-*/
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-       
-          <div>
-              <Table data={materials} />
-          </div>        
-        </div>
-    );
-  }
-}
-
-export default App;
+export default Table;
