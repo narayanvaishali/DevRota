@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import Table from './components/Table';
+import Products from './components/Products';
 import './App.css';
 
 
@@ -56,8 +56,33 @@ const materials = [
                               'name': 'TA',
                               'shift_AM': 'O',
                               'shift_PM': 'O'
+                          } ,
+                           {  
+                                  'day' : '3',
+                                  'name': 'TT',
+                                  'shift_AM': 'O',
+                                  'shift_PM': 'O'
+                              }, {
+                                 'day' : '3',
+                                  'name': 'VP',
+                                'shift_AM': 'O',
+                                'shift_PM': 'O'
+                            }, {
+                                'day' : '3',
+                                'name': 'CM',
+                                'shift_AM': 'O',
+                                'shift_PM': 'O'
+                          }, {
+                              'day' : '3',
+                              'name': 'KT',
+                              'shift_AM': 'A',
+                              'shift_PM': 'A'
+                          }, {
+                              'day' : '3',
+                              'name': 'TA',
+                              'shift_AM': 'O',
+                              'shift_PM': 'O'
                           }
-  
   
                   ]
 
@@ -146,12 +171,15 @@ const materials = [
 }
 */
 class App extends Component {
+
+
   render() {
     return (
       <div className="App">
        
           <div>
-              <Table data={materials} />
+             {<Table data={materials} /> }
+              {/* <Products /> */}
           </div>        
         </div>
     );
