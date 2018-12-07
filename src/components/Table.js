@@ -62,18 +62,19 @@ import '../App.css';
 class EditableCell extends React.Component {
     constructor(props) {
     super(props);
-    
+
     /*this.state = {
      item : [{
       id: this.props.id,
       name: this.props.name,
       value: this.props.value
      }] };*/
-
+/*
      this.state  = {
-        selectedTeam: props.cellData.value,
-        validationError: ""
-    }
+    //         selectedTeam: props.cellData.value ,
+   //      validationError: "", 
+        value : props.cellData.value    
+    }*/
 
     this.state = {
         values: [
@@ -81,22 +82,29 @@ class EditableCell extends React.Component {
             { name: 'O', id: 'O' },
             { name: 'A', id: 'A' }
         ]}
-        this.handleChange = this.handleChange.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
     };
-
+/*
     handleChange(evt) {
             var item = {
             key: evt.target.id,
             name: evt.target.name,
             value: evt.target.value
         };
+
+        this.setState({ value: evt.target.value });
+        
        // evt.preventDefault();
-            //console.log(item);
-        // this.setState({selectedTeam: evt.target.value});
-         //alert(selectedTeam);
-    }
+        //console.log(item);
+       // this.setState({selectedTeam: evt.target.value});
+      //  this.setState({selectedTeam: this.refs.input.value});
+      // alert(this.state.value);
+    }*/
 
     render() {
+        //console.log (this.props);
+         const {  value } = this.state;
+
         //this.setState ({selectedTeam : this.props.cellData.value});
           let optionTemplate = this.state.values.map(v => (
             <option value={v.id} key={v.id} >{v.name}</option>
@@ -113,9 +121,10 @@ class EditableCell extends React.Component {
         return (
             <td>
                 {/* <input type='text' name={this.props.cellData.type} id={this.props.cellData.id} value={this.props.cellData.value} onChange={this.props.onProductTableUpdate}/> */}
-                    <select name={this.props.cellData.type} id={this.props.cellData.id} 
-                            value={this.state.selectedTeam != this.props.cellData.value? this.props.cellData.value : this.state.selectedTeam} 
-                                onChange={this.handleChange}>
+                    <select  name={this.props.cellData.name} id={this.props.cellData.id} 
+                            shifttype = {this.props.cellData.shifttype}
+                           onChange={this.props.onProductTableUpdate} value={this.props.cellData.value}
+                    >
                          {optionTemplate}
                     </select>
             </td>
@@ -123,17 +132,7 @@ class EditableCell extends React.Component {
 
   }
 }
-class CustomButton extends Component {
-  render() {
-    const { onPress, children, data } = this.props;
-//console.log (data);
-    return (
-      <button type="button" onClick={onPress} id={data}>
-        {children}
-      </button>
-    );
-  }
-}
+
 class Table extends React.Component {
     
   constructor(props) {
@@ -141,69 +140,46 @@ class Table extends React.Component {
     this.state = {
       materials: props.data
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleEvent = this.handleEvent.bind(this);
     this.onProductTableUpdate = this.onProductTableUpdate.bind(this);
   }
 
    onProductTableUpdate(evt) {
-    var item = {
-      id: evt.target.id,
-      name: evt.target.name,
-      value: evt.target.value
-    };
 
-    console.log(item);
-/*var products = this.state.products.slice();
-  var newProducts = products.map(function(product) {
+    //console.log(evt.target);
+        var m_index;
+        var item = {
+            id: evt.target.id,
+            name: evt.target.name,
+            value: evt.target.value
+        };
 
-    for (var key in product) {
-      if (key == item.name && product.id == item.id) {
-        product[key] = item.value;
+        var res = item.id.split("-");
+        var res1 = '';
+        var shifttype = item.id.substr((item.id.lastIndexOf("-"))+1);
+        var mat = this.state.materials.slice();
+        var newMat = mat.map(function(m, index) {
+        res1 = '';
+        for (var key in m) {
+             res1 = res1  + m[key] + "-" ;
+        }
+        if (res1.substring(0, res1.lastIndexOf("-"))  === item.id.substring(0,item.id.lastIndexOf("-")))
+            {
+                m_index = index;
 
-      }
+                if (shifttype == 'shift_AM') 
+                    mat[m_index].shift_AM = item.value
+                else if (shifttype == 'shift_PM') 
+                    mat[m_index].shift_PM = item.value
+            }
+        return m;
     }
-    return product;
-  });
-
-    this.setState({products:newProducts});*/
-  //  console.log(this.state.products);
+);
+   // console.log(newMat);
+    this.setState({materials:newMat});
   };
 
- handleClick(e) {
-    //e.preventDefault();
-   // console.log('The link was clicked.');
-  }
- handleChange = event => {
-   // this.setState({ [event.target.name]: event.target.value });
-   console.log(event);
-  };
-
-  handleEvent(e) {
-     e.preventDefault();
-      //alert('here');
-      console.log(e.target.value);
-  };
-
-  //handleChange(index, dataType, value) {
-       // console.log(dataType);
-
-   /* const newState = this.state.materials.map((item, i) => {
-      if (i === index) {
-        return {...item, [dataType]: value};
-      }
-      return item;
-    });
-    
-    this.setState({
-       materials: newState
-    });
-  }*/
   
   render() {
-
-
      var  createTable = () => {
             let table = []
 
@@ -214,13 +190,8 @@ class Table extends React.Component {
 
             // Outer loop to create parent
             for (let i = 0; i < dd.length; i++) {
-                    //let children = []
-                    //Inner loop to create children
-                   // for (let j = 0; j < dd[i]; j++) {
-                        table.push(<td >{displayColData ( dd[i])}</td>)
-                   // }
-                    //Create the parent and add the children
-                    //table.push(<tr>{children}</tr>)
+                   table.push(<td >{displayColData ( dd[i])}</td>
+                )
             }
             return table
         }
@@ -253,18 +224,20 @@ class Table extends React.Component {
                                 <td >
                                     <EditableCell onProductTableUpdate={this.onProductTableUpdate} 
                                     cellData={{
-                                        "type": "name",
+                                        shifttype : 'shift_AM',
+                                        "name": this.state.materials[index].name,
                                         value: this.state.materials[index].shift_AM,
-                                        id: day +'-'+ this.state.materials[index].name + '-'+ this.state.materials[index].shift_AM + '-'+ this.state.materials[index].shift_PM
+                                        id: day +'-'+ this.state.materials[index].name + '-'+ this.state.materials[index].shift_AM + '-'+ this.state.materials[index].shift_PM + '-'+ 'shift_AM'
                                         }}/>
                                     
                                 </td>
                                 <td >
                                       <EditableCell onProductTableUpdate={this.onProductTableUpdate} 
                                         cellData={{
-                                        "type": "name",
+                                        shifttype : 'shift_PM',
+                                        "name": this.state.materials[index].name,
                                         value: this.state.materials[index].shift_PM,
-                                        id: day +'-'+ this.state.materials[index].name + '-'+ this.state.materials[index].shift_AM + '-'+ this.state.materials[index].shift_PM
+                                        id: day +'-'+ this.state.materials[index].name + '-'+ this.state.materials[index].shift_AM + '-'+ this.state.materials[index].shift_PM + '-'+ 'shift_PM'
                                         }}/>
                                 </td>
                             </tr>
@@ -277,7 +250,7 @@ class Table extends React.Component {
        );
    }
     console.clear();
-   // console.log(JSON.stringify(this.state.materials));
+    //console.log(JSON.stringify(this.state.materials));
    
   var getDistinctDay = () => {
         let _uniqDays = []; 
