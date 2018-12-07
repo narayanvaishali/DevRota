@@ -1,143 +1,79 @@
 import React, { Component } from 'react';
-import '../App.css';
-/*const materials = [
-                              {  
-                                  'day' : '4',
-                                  'name': 'TT',
-                                  'shift_AM': 'H',
-                                  'shift_PM': 'H'
-                              }, {
-                                 'day' : '4',
-                                  'name': 'VP',
-                                'shift_AM': 'H',
-                                'shift_PM': 'H'
-                            }, {
-                                'day' : '4',
-                                'name': 'CM',
-                                'shift_AM': 'H',
-                                'shift_PM': 'A'
-                          }, {
-                              'day' : '4',
-                              'name': 'KT',
-                              'shift_AM': 'O',
-                              'shift_PM': 'O'
-                          }, {
-                              'day' : '4',
-                              'name': 'TA',
-                              'shift_AM': 'O',
-                              'shift_PM': 'H'
-                          },
-                           {  
-                                  'day' : '10',
-                                  'name': 'TT',
-                                  'shift_AM': 'O',
-                                  'shift_PM': 'O'
-                              }, {
-                                 'day' : '10',
-                                  'name': 'VP',
-                                'shift_AM': 'H',
-                                'shift_PM': 'H'
-                            }, {
-                                'day' : '10',
-                                'name': 'CM',
-                                'shift_AM': 'H',
-                                'shift_PM': 'H'
-                          }, {
-                              'day' : '10',
-                              'name': 'KT',
-                              'shift_AM': 'A',
-                              'shift_PM': 'A'
-                          }, {
-                              'day' : '10',
-                              'name': 'TA',
-                              'shift_AM': 'O',
-                              'shift_PM': 'O'
-                          }
-  
-  
-                  ]
-*/
+import PropTypes from 'prop-types';
 
-class Table extends React.Component {
+import '../App.css';
+
+class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      materials: props.data
+      materials: props.data,
     };
   }
-  
+
   handleChange(index, dataType, value) {
-    const newState = this.state.materials.map((item, i) => {
-      if (i == index) {
-        return {...item, [dataType]: value};
+    const { materials } = this.state;
+    const newState = materials.map((item, i) => {
+      if (i === index) {
+        return { ...item, [dataType]: value };
       }
       return item;
     });
-    
+
     this.setState({
-       materials: newState
+      materials: newState,
     });
   }
-  
-  render() {
 
-    var displayColData  = (day) => {   
-      //console.log(day);
-       return(
-        <table className='table table-bordered'>
-            <thead>
-                <tr>
-                     <th></th>
-                    <th>{day}</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>AM</th>
-                    <th>PM</th>
-                </tr>
-            </thead>
-            <tbody>
-              { //outer 
-                  this.state.materials.map((row, index) => {
-                    if (day == this.state.materials[index].day)
-                    {
-                      return (
-                          <tr>
-                              <td>
-                                    {this.state.materials[index].name}
-                              </td>
-                              <td>
-                                    {this.state.materials[index].shift_AM}
-                              </td>
-                              <td>
-                                    {this.state.materials[index].shift_PM}
-                              </td>
-                          </tr>
-                      );
-                      } 
-                  })
-              }
-            </tbody>
-        </table>
-       );
-   }
-    console.clear();
-   // console.log(JSON.stringify(this.state.materials));
-   
+  render() {
+    const { materials } = this.state;
+    const displayColData = day => (
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th />
+            <th>{day}</th>
+            <th />
+          </tr>
+          <tr>
+            <th />
+            <th>AM</th>
+            <th>PM</th>
+          </tr>
+        </thead>
+        <tbody>
+          { materials.filter(m => m.day === day).map(row => (
+            <tr>
+              <td>
+                {row.name}
+              </td>
+              <td>
+                {row.shift_AM}
+              </td>
+              <td>
+                {row.shift_PM}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
     return (
-     // this.state.materials.map((row, index) => {
-       <tr> 
-          <td>
-          {displayColData (4) }
+      <tr>
+        <td>
+          { displayColData(4) }
         </td>
-         <td>
-          {displayColData (10) }
+        <td>
+          { displayColData(10) }
         </td>
-        
-        </tr>
-     // })
-    )
+
+      </tr>
+    );
   }
 }
+
+Table.propTypes = {
+  data: PropTypes.object.isRequired, // eslint-disable-line
+};
+
 export default Table;
