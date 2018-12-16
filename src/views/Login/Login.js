@@ -16,6 +16,19 @@ const Login = () => (
         return <h1>{data}</h1>;
       } }
     </Shift>
+
+    <Shift user="VP" date="20181216" shift="AM">
+      {({ loading, error, data }) => {
+        if (loading) return 'Loading....';
+
+        if (error) {
+          return <pre>{JSON.stringify(error, null, 2)}</pre>;
+        }
+        console.log('DATA>>>>>>', data);
+        return <h1>{data}</h1>;
+      } }
+    </Shift>
+
   </Layout>
 );
 
