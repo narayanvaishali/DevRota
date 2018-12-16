@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 
 const RotaGridHeader = ({ days, classes }) => {
-  const shiftCells = ['AM', 'PM'].map(shift => <th>{shift}</th>);
   const shifts = ['AM', 'PM'];
   return (
     <thead>
@@ -30,8 +29,9 @@ const RotaGridHeader = ({ days, classes }) => {
                 ))}
               </tr>
               <tr>
-                {days.map(_ => shifts.map(shift => (
-                    <th key={shift}>{shift}</th>)))}
+                {days.map(() => shifts.map(shift => (
+                  <th key={shift}>{shift}</th>
+                )))}
               </tr>
             </thead>
           </table>

@@ -1,16 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import Layout from '../Layout';
-import { RotaGridHeader } from '../../components/RotaGrid';
-import Shift from '../../containers/Shift';
-
+import { RotaGridHeader, RotaGridRow } from '../../components/RotaGrid';
 import styles from './styles';
-
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month - 1, 1);
@@ -20,27 +17,6 @@ const getMonthDays = (year, month) => {
     date.setDate(date.getDate() + 1);
   }
   return result;
-};
-
-const renderShifts = (user, date) => {
-  const shifts = ['AM', 'PM'];
-  return (
-    <Grid container>
-      {
-        shifts.map(shift => (
-          <Grid item>
-            <Shift user={user} date={moment(date).format('YYYYMMDD')} shift={shift}>
-              {({ loading, error, data }) => {
-                if (loading) return <Paper>Loading...</Paper>;
-                if (error) return 'Error...';
-                return <Paper>{data}</Paper>;
-              } }
-            </Shift>
-          </Grid>
-        ))
-      }
-    </Grid>
-  );
 };
 
 const Rota = ({ month, year, classes }) => {
@@ -54,7 +30,7 @@ const Rota = ({ month, year, classes }) => {
   const days = getMonthDays(year, month);
 
   return (
-    <Layout title="Rota" drawer="true">
+    <Layout title="Rota">
       <Fragment>
         <h1>
           {month}
@@ -69,33 +45,12 @@ const Rota = ({ month, year, classes }) => {
             </colgroup>
             <RotaGridHeader days={days} />
             <tbody>
-              <tr><td>test</td></tr>
-              <tr><td>test</td></tr>
-              <tr><td>test</td></tr>
-              <tr><td>test</td></tr>
-              <tr><td>test</td></tr>
+              {staffList.map(staff => (
+                <RotaGridRow staff={staff} days={days} />
+              ))}
             </tbody>
           </table>
         </div>
-
-        <Grid container spacing={8}>
-          <Grid item>Name</Grid>
-          {days.map(day => (
-            <Grid item>
-              {moment(day).format('DD')}
-            </Grid>
-          ))}
-        </Grid>
-        {staffList.map(staff => (
-          <Grid container spacing={8}>
-            <Grid item>{staff}</Grid>
-            {days.map(day => (
-              <Grid item>
-                {renderShifts(staff, day)}
-              </Grid>
-            ))}
-          </Grid>
-        ))}
       </Fragment>
     </Layout>
   );
