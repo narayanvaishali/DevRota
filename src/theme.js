@@ -1,7 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const palette = {
-  type: 'dark',
   primary: {
     light: '#d8cfb3',
     main: '#fff',
@@ -9,7 +8,7 @@ const palette = {
   },
   secondary: {
     light: '#ff4081',
-    main: '#f50057', 
+    main: '#f50057',
   },
   error: {
     light: '#e57373',
@@ -19,7 +18,7 @@ const palette = {
   divider: '#454e5e',
   background: {
     default: '#fff',
-    paper: '#1a222f',
+    paper: '#fff',
     secondary: '#353F50',
   },
 };

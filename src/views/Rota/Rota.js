@@ -1,12 +1,16 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-// import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import Layout from '../Layout';
+import { RotaGridHeader } from '../../components/RotaGrid';
 import Shift from '../../containers/Shift';
+
+import styles from './styles';
+
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month - 1, 1);
@@ -39,7 +43,7 @@ const renderShifts = (user, date) => {
   );
 };
 
-const Rota = ({ month, year }) => {
+const Rota = ({ month, year, classes }) => {
   const staffList = [
     'VP',
     'TT',
@@ -57,8 +61,24 @@ const Rota = ({ month, year }) => {
           -
           {year}
         </h1>
+        <div style={{ width: '1200px', overflow: 'scroll' }}>
+          <table className={classes.rotaContainer}>
+            <colgroup>
+              <col width="300px" />
+              <col width="auto" />
+            </colgroup>
+            <RotaGridHeader days={days} />
+            <tbody>
+              <tr><td>test</td></tr>
+              <tr><td>test</td></tr>
+              <tr><td>test</td></tr>
+              <tr><td>test</td></tr>
+              <tr><td>test</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-        <Grid container>
+        <Grid container spacing={8}>
           <Grid item>Name</Grid>
           {days.map(day => (
             <Grid item>
@@ -67,7 +87,7 @@ const Rota = ({ month, year }) => {
           ))}
         </Grid>
         {staffList.map(staff => (
-          <Grid container>
+          <Grid container spacing={8}>
             <Grid item>{staff}</Grid>
             {days.map(day => (
               <Grid item>
@@ -90,6 +110,7 @@ Rota.defaultProps = {
 Rota.propTypes = {
   month: PropTypes.number,
   year: PropTypes.number,
+  classes: PropTypes.object.isRequired, // eslint-disable-line
 };
 
-export default Rota;
+export default withStyles(styles)(Rota);
