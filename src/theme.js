@@ -9,7 +9,7 @@ const palette = {
   },
   secondary: {
     light: '#ff4081',
-    main: '#f50057', //     dark: '#c51162',
+    main: '#f50057', 
   },
   error: {
     light: '#e57373',
