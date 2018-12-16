@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -11,13 +12,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ReportIcon from '@material-ui/icons/Report';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import StarIcon from '@material-ui/icons/Star';
 import SendIcon from '@material-ui/icons/Send';
 
 // import { logout } from '../utils/auth';
 
-import styles from './styles'
+import styles from './styles';
 
 // const handleLogout = history => {
 //   logout()
@@ -39,14 +39,15 @@ const Sidebar = ({ classes, routerHistory }) => (
   <Drawer
     variant="permanent"
     classes={{
-      paper: classes.drawerPaper
+      paper: classes.drawerPaper,
     }}
   >
     <div className={classes.toolbar} />
     <List>
       <ListItem
         button
-        onClick={() => handleClick('/dashboard', routerHistory)}
+        component={Link}
+        to="/hello"
       >
         <ListItemIcon>
           <InboxIcon />
