@@ -47,7 +47,7 @@ const Sidebar = ({ classes, routerHistory }) => (
       <ListItem
         button
         component={Link}
-        to="/hello"
+        to="/rota"
       >
         <ListItemIcon>
           <InboxIcon />

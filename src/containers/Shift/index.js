@@ -27,7 +27,7 @@ class ShiftCell extends Component {
     this.dataRef = db.ref(`/schedules/${user}/${date}/${shift}`);
     this.dataRef.on('value', (snap) => {
       this.setState({
-        data: snap.val(),
+        data: snap.val() || 'O',
         loading: false,
       });
     });
