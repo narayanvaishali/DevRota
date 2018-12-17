@@ -1,25 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
+import { withStyles } from '@material-ui/core/styles';
 import RotaGridCell from './RotaGridCell';
+
+import styles from './styles';
 
 const RotaGridRow = ({ classes, staff, days }) => {
   const shifts = ['AM', 'PM'];
   return (
     <tr>
-      <td className="staff-name">
+      <td className={classes.rotaUserName}>
         {staff}
       </td>
-      <td className="schedule-cell">
-        <div className="inner-schedule-background">
-          <table>
-            <tbody>
-              <tr>
-                <td />
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <table className="inner-schedule-table">
+      <td>
+        <table className={classes.innerRotaTable}>
           <tbody>
             <tr>
               {days.map((day) => {
@@ -41,4 +36,10 @@ const RotaGridRow = ({ classes, staff, days }) => {
   );
 };
 
-export default RotaGridRow;
+RotaGridRow.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+  staff: PropTypes.string.isRequired,
+  days: PropTypes.arrayOf(PropTypes.date).isRequired,
+};
+
+export default withStyles(styles)(RotaGridRow);

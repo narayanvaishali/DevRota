@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 
 import Shift from '../../containers/Shift';
+import styles from './styles';
 
 const RotaGridCell = ({
   classes,
@@ -13,7 +16,13 @@ const RotaGridCell = ({
     {({ loading, error, data }) => {
       if (loading) return <td>Loading...</td>;
       if (error) return <td>Error...</td>;
-      return <td>{data}</td>;
+
+      const blockClasses = classNames({
+        [classes.rotaBlock]: true,
+        [classes[data]]: true,
+      });
+
+      return <td><a className={blockClasses}>{data}</a></td>;
     } }
   </Shift>
 );
@@ -26,4 +35,4 @@ RotaGridCell.propTypes = {
 };
 
 
-export default RotaGridCell;
+export default withStyles(styles)(RotaGridCell);
