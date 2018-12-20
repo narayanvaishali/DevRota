@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import db from '../../db';
+import { database } from '../../db';
 
 class ShiftCell extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class ShiftCell extends Component {
   referenceData() {
     const { user, date, shift } = this.props;
 
-    this.dataRef = db.ref(`/schedules/${user}/${date}/${shift}`);
+    this.dataRef = database.ref(`/schedules/${user}/${date}/${shift}`);
     this.dataRef.on('value', (snap) => {
       this.setState({
         data: snap.val() || 'O',
