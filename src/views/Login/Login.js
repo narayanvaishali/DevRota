@@ -1,35 +1,117 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import ErrorIcon from '@material-ui/icons/Error';
+
+import { auth, LOCAL } from '../../db';
 
 import Layout from '../Layout';
-import Shift from '../../containers/Shift';
+import styles from './styles';
 
-const Login = () => (
-  <Layout drawer="true">
-    <h1>Hello Dev Rota</h1>
-    <Shift user="VP" date="20181215" shift="AM">
-      {({ loading, error, data }) => {
-        if (loading) return 'Loading....';
 
-        if (error) {
-          return <pre>{JSON.stringify(error, null, 2)}</pre>;
-        }
-        return <h1>{data}</h1>;
-      } }
-    </Shift>
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      message: undefined,
+    };
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-    <Shift user="VP" date="20181216" shift="AM">
-      {({ loading, error, data }) => {
-        if (loading) return 'Loading....';
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  }
 
-        if (error) {
-          return <pre>{JSON.stringify(error, null, 2)}</pre>;
-        }
-        console.log('DATA>>>>>>', data);
-        return <h1>{data}</h1>;
-      } }
-    </Shift>
+  handleLogin(e) {
+    e.preventDefault();
+    const { email, password } = this.state;
+    const { history } = this.props;
+    auth().setPersistence(LOCAL)
+      .then(() => auth().signInWithEmailAndPassword(email, password))
+      .then(() => {
+        history.push('/');
+      })
+      .catch((err) => {
+        this.setState({
+          message: err.message,
+        });
+      });
+  }
 
-  </Layout>
-);
+  render() {
+    const { classes } = this.props;
+    const { email, password, message } = this.state;
+    return (
+      <Layout drawer={false}>
+        <div className="container">
+          <Grid container justify="center">
+            <Grid item xs={12} sm={8} md={4}>
+              <form
+                className={classes.loginForm}
+                noValidate
+                autoComplete="off"
+                onSubmit={this.handleLogin}
+              >
+                <h2>Login</h2>
+                {message && (
+                  <SnackbarContent
+                    className={classes.errorMessage}
+                    aria-describedby="login-error"
+                    message={(
+                      <span id="login-error" className={classes.message}>
+                        <ErrorIcon className={classes.messageIcon} />
+                        {message}
+                      </span>
+                    )}
+                  />
+                ) }
+                <TextField
+                  id="outlined-email-input"
+                  label="Email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  margin="normal"
+                  fullWidth
+                  value={email}
+                  onChange={this.handleChange}
+                />
+                <TextField
+                  id="outlined-passowrd-input"
+                  label="Password"
+                  type="password"
+                  name="password"
+                  autoComplete="password"
+                  margin="normal"
+                  fullWidth
+                  value={password}
+                  onChange={this.handleChange}
+                />
+                <Button variant="outlined" color="secondary" className={classes.button} type="submit">
+                  Login
+                </Button>
+              </form>
+            </Grid>
+          </Grid>
+        </div>
+      </Layout>
+    );
+  }
+}
 
-export default Login;
+Login.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+  history: PropTypes.object.isRequired, // eslint-disable-line
+};
+
+export default withStyles(styles)(Login);
