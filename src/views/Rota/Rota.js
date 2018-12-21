@@ -1,11 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-// import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 import Layout from '../Layout';
-import RotaGrid, { RotaGridHeader, RotaGridRow } from '../../components/RotaGrid';
+import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
 
 const getMonthDays = (year, month) => {
@@ -27,19 +26,18 @@ const Rota = ({ month, year }) => {
   ];
 
   const days = getMonthDays(year, month);
-
   return (
-    <Layout title="Rota">
-      <Fragment>
+    <Layout title="Rota" drawer="true">
+      <Grid container justify="center">
         <h1>
           {month}
           -
           {year}
         </h1>
-        <div style={{ width: '1200px', overflow: 'scroll' }}>
+        <div style={{ width: '100%', overflow: 'scroll' }}>
           <RotaGrid users={staffList} days={days} />
         </div>
-      </Fragment>
+      </Grid>
     </Layout>
   );
 };

@@ -41,7 +41,7 @@ const Layout = ({
 
 Layout.defaultProps = {
   title: 'Dev Rota',
-  drawer: false,
+  drawer: true,
 };
 
 Layout.propTypes = {
