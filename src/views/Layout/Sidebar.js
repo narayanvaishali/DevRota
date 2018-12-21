@@ -15,19 +15,34 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import StarIcon from '@material-ui/icons/Star';
 import SendIcon from '@material-ui/icons/Send';
 
-// import { logout } from '../utils/auth';
-
+ import { logout } from   "../../db/auth";
 import styles from './styles';
 
-// const handleLogout = history => {
-//   logout()
-//     .then(res => {
-//       if (history) history.push('/login');
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// };
+ const handleLogout = (history) => {
+
+   logout()
+     .then(res => {
+       if (history) history.push('/login');
+     })
+     .catch(err => {
+       console.log(err);
+     })
+ };
+
+  /* const handleLogin = history => {
+    
+    const { email, password } = this.state;
+
+    login(email, password)
+      .then(res => {
+        localStorage.setItem("token", res.qa);
+        this.props.history.push("/dashboard");
+      })
+      .catch(err => {
+        this.setState({ alert: true });
+        console.log(err);
+      });
+  };*/
 
 const handleClick = (to, history) => {
   if (to && history) {
@@ -78,7 +93,7 @@ const Sidebar = ({ classes, routerHistory }) => (
     </List>
     <Divider />
     <List>
-      <ListItem button>
+      <ListItem button onClick={() => handleLogout(routerHistory)}>
         <ListItemIcon>
           <ReportIcon />
         </ListItemIcon>

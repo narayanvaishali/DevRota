@@ -29,7 +29,7 @@ const Rota = ({ month, year }) => {
   const days = getMonthDays(year, month);
 
   return (
-    <Layout title="Rota">
+    <Layout title="Rota" drawer="true">
       <Fragment>
         <h1>
           {month}
