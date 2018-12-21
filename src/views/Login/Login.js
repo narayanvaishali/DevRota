@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import ErrorIcon from '@material-ui/icons/Error';
 
-import { auth } from '../../db';
+import { auth, LOCAL } from '../../db';
 
 import Layout from '../Layout';
 import styles from './styles';
@@ -36,13 +36,16 @@ class Login extends Component {
     e.preventDefault();
     const { email, password } = this.state;
     const { history } = this.props;
-    auth().signInWithEmailAndPassword(email, password).then(() => {
-      history.push('/');
-    }).catch((err) => {
-      this.setState({
-        message: err.message,
+    auth().setPersistence(LOCAL)
+      .then(() => auth().signInWithEmailAndPassword(email, password))
+      .then(() => {
+        history.push('/');
+      })
+      .catch((err) => {
+        this.setState({
+          message: err.message,
+        });
       });
-    });
   }
 
   render() {
