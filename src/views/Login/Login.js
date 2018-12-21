@@ -17,8 +17,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'sabin@hotmail.com',
-      password: 'password',
+      email: '',
+      password: '',
       message: undefined,
     };
     this.handleLogin = this.handleLogin.bind(this);
