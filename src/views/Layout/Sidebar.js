@@ -15,42 +15,9 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import StarIcon from '@material-ui/icons/Star';
 import SendIcon from '@material-ui/icons/Send';
 
- import { logout } from   "../../db/auth";
 import styles from './styles';
 
- const handleLogout = (history) => {
-
-   logout()
-     .then(res => {
-       if (history) history.push('/login');
-     })
-     .catch(err => {
-       console.log(err);
-     })
- };
-
-  /* const handleLogin = history => {
-    
-    const { email, password } = this.state;
-
-    login(email, password)
-      .then(res => {
-        localStorage.setItem("token", res.qa);
-        this.props.history.push("/dashboard");
-      })
-      .catch(err => {
-        this.setState({ alert: true });
-        console.log(err);
-      });
-  };*/
-
-const handleClick = (to, history) => {
-  if (to && history) {
-    history.push(to);
-  }
-};
-
-const Sidebar = ({ classes, routerHistory }) => (
+const Sidebar = ({ classes }) => (
   <Drawer
     variant="permanent"
     classes={{
@@ -69,13 +36,13 @@ const Sidebar = ({ classes, routerHistory }) => (
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
-      <ListItem button onClick={() => handleClick('/staffs', routerHistory)}>
+      <ListItem button>
         <ListItemIcon>
           <StarIcon />
         </ListItemIcon>
         <ListItemText primary="Monthly View" />
       </ListItem>
-      <ListItem button onClick={() => handleClick('/staffs', routerHistory)}>
+      <ListItem button>
         <ListItemIcon>
           <StarIcon />
         </ListItemIcon>
@@ -83,7 +50,6 @@ const Sidebar = ({ classes, routerHistory }) => (
       </ListItem>
       <ListItem
         button
-        onClick={() => handleClick('/branches', routerHistory)}
       >
         <ListItemIcon>
           <SendIcon />
@@ -93,7 +59,11 @@ const Sidebar = ({ classes, routerHistory }) => (
     </List>
     <Divider />
     <List>
-      <ListItem button onClick={() => handleLogout(routerHistory)}>
+      <ListItem
+        button
+        component={Link}
+        to="/logout"
+      >
         <ListItemIcon>
           <ReportIcon />
         </ListItemIcon>
@@ -104,8 +74,8 @@ const Sidebar = ({ classes, routerHistory }) => (
 );
 
 Sidebar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  routerHistory: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+  routerHistory: PropTypes.object.isRequired, // eslint-disable-line
 }
 
 export default withStyles(styles)(Sidebar);

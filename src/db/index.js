@@ -2,6 +2,19 @@ import firebase from 'firebase';
 import config from './config';
 
 firebase.initializeApp(config);
-const database = firebase.database();
+export const database = firebase.database();
+export const { auth } = firebase;
 
-export default database;
+export const { LOCAL, SESSION, NONE } = auth.Auth.Persistence;
+
+export const getUser = () => new Promise((resolve) => {
+  auth().onAuthStateChanged((user) => {
+    resolve(user);
+  });
+});
+
+export default {
+  auth,
+  database,
+  getUser,
+};

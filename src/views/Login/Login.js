@@ -1,138 +1,117 @@
-import React, { Component } from "react";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import ErrorIcon from '@material-ui/icons/Error';
+
+import { auth, LOCAL } from '../../db';
+
 import Layout from '../Layout';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import styles from './styles';
 
-import AlertDialog from "../../components/AlertDialog";
-
-//utility
-import { login, isAuthenticated } from "../../db/auth";
-
-const styles = theme => ({
-  formControl: {
-    margin: theme.spacing.unit * 2
-  },
-  alignRight: {
-    textAlign: "right"
-  },
-  loginContainer: {
-    padding: "50px",
-    minWidth: "450px"
-  }
-});
 
 class Login extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = {
-      email: "",
-      password: "",
-      alert: false
+      email: '',
+      password: '',
+      message: undefined,
     };
-
-    this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    if (isAuthenticated()) {
-      this.props.history.push("/rota");
-    }
-  }
-
-  handleChange = e => {
-    e.preventDefault();
+  handleChange(e) {
+    const { name, value } = e.target;
     this.setState({
-      [e.target.id]: e.target.value
+      [name]: value,
     });
-  };
+  }
 
-  handleLogin = e => {
+  handleLogin(e) {
     e.preventDefault();
     const { email, password } = this.state;
-
-    login(email, password)
-      .then(res => {
-        localStorage.setItem("token", res.qa);
-        this.props.history.push("/rota");
+    const { history } = this.props;
+    auth().setPersistence(LOCAL)
+      .then(() => auth().signInWithEmailAndPassword(email, password))
+      .then(() => {
+        history.push('/');
       })
-      .catch(err => {
-        this.setState({ alert: true });
-        console.log(err);
+      .catch((err) => {
+        this.setState({
+          message: err.message,
+        });
       });
-  };
-
-  LandingPageLink = props => <Link to="/" {...props} />;
+  }
 
   render() {
     const { classes } = this.props;
-
+    const { email, password, message } = this.state;
     return (
-      <Layout>
-        <div
-          style={{
-            backgroundImage: `linear-gradient(rgb(148, 132, 223), rgba(13, 97, 146, 0.89))`,
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          <Paper elevation={3} className={classes.loginContainer}>
-            <form onSubmit={this.handleLogin} noValidate>
-              <Typography variant="display2">Login</Typography>
-
-              <FormControl fullWidth className={classes.formControl}>
-                <InputLabel htmlFor="email">Email</InputLabel>
-                <Input
-                  id="email"
-                  value={this.state.email}
+      <Layout drawer={false}>
+        <div className="container">
+          <Grid container justify="center">
+            <Grid item xs={12} sm={8} md={4}>
+              <form
+                className={classes.loginForm}
+                noValidate
+                autoComplete="off"
+                onSubmit={this.handleLogin}
+              >
+                <h2>Login</h2>
+                {message && (
+                  <SnackbarContent
+                    className={classes.errorMessage}
+                    aria-describedby="login-error"
+                    message={(
+                      <span id="login-error" className={classes.message}>
+                        <ErrorIcon className={classes.messageIcon} />
+                        {message}
+                      </span>
+                    )}
+                  />
+                ) }
+                <TextField
+                  id="outlined-email-input"
+                  label="Email"
                   type="email"
+                  name="email"
+                  autoComplete="email"
+                  margin="normal"
+                  fullWidth
+                  value={email}
                   onChange={this.handleChange}
                 />
-              </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                  id="password"
-                  value={this.state.password}
+                <TextField
+                  id="outlined-passowrd-input"
+                  label="Password"
                   type="password"
+                  name="password"
+                  autoComplete="password"
+                  margin="normal"
+                  fullWidth
+                  value={password}
                   onChange={this.handleChange}
                 />
-              </FormControl>
-
-              <FormControl className={classes.formControl} fullWidth>
-                <div className={classes.alignRight}>
-                  <Button variant="contained" color="primary" type="submit">
-                    Sign In
-                  </Button>
-                  <Button variant="outlined" component={this.LandingPageLink}>
-                    Cancel
-                  </Button>
-                </div>
-              </FormControl>
-            </form>
-          </Paper>
-
-          <AlertDialog
-            title="Invalid Login"
-            message="There is an error loggin you in. Please check email and password and try again"
-            open={this.state.alert}
-            onClose={() => {
-              this.setState({ alert: false });
-            }}
-          />
+                <Button variant="outlined" color="secondary" className={classes.button} type="submit">
+                  Login
+                </Button>
+              </form>
+            </Grid>
+          </Grid>
         </div>
       </Layout>
     );
   }
 }
 
-export default withStyles(styles)(Login);
+Login.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+  history: PropTypes.object.isRequired, // eslint-disable-line
+};
 
+export default withStyles(styles)(Login);
