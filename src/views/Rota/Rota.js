@@ -29,6 +29,18 @@ class Rota extends Component {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
     };
+    this.handleNavigation = this.handleNavigation.bind(this);
+  }
+
+  handleNavigation(offset) {
+    this.setState((prev) => {
+      const newDate = moment().year(prev.year).month(prev.month).date(1)
+        .add(offset, 'M');
+      return {
+        month: newDate.month(),
+        year: newDate.year(),
+      };
+    });
   }
 
   render() {
@@ -60,7 +72,7 @@ class Rota extends Component {
                 color="secondary"
                 aria-label="Previous"
                 className={classes.buttonMargin}
-                onClick={() => this.handleMove(-1)}
+                onClick={() => this.handleNavigation(-1)}
               >
                 <ChevronLeft />
               </Fab>
@@ -69,7 +81,7 @@ class Rota extends Component {
                 color="secondary"
                 aria-label="Next"
                 className={classes.buttonMargin}
-                onClick={() => this.handleMove(1)}
+                onClick={() => this.handleNavigation(1)}
               >
                 <ChevronRight />
               </Fab>
