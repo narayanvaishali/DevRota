@@ -14,7 +14,7 @@ const App = () => (
       <Route exact path="/login" component={Login} />
       <Route exact path="/logout" component={Logout} />
       <SecureRoute exact path="/" component={Dashboard} />
-      <SecureRoute exact path="/rota" component={Rota} />
+      <Route exact path="/rota" component={Rota} />
     </Fragment>
   </Router>
 );

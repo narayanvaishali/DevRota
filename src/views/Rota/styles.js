@@ -1,16 +1,16 @@
-const styles = () => ({
-  rotaContainer: {
-    border: '1px solid #ddd;',
-    width: '100%',
-    maxWidth: '100%',
-    borderCollapse: 'collapse',
-    '& tbody': {
-      '& tr': {
-        '&:nth-of-type(even)': {
-          backgroundColor: '#efefef',
-        },
-      },
-    },
+const styles = theme => ({
+  buttonMargin: {
+    margin: theme.spacing.unit,
+  },
+  titleContainer: {
+    padding: '20px',
+  },
+  calendarTitle: {
+    marginLeft: `${theme.spacing.unit * 2}px`,
+  },
+  rotaScroller: {
+    width: '100%', 
+    overflow: 'scroll' 
   },
 });
 

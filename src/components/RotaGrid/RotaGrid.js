@@ -9,7 +9,7 @@ import styles from './styles';
 const Rota = ({ users, days, classes }) => (
   <table className={classes.rotaContainer}>
     <colgroup>
-      <col width="300px" />
+      <col width="250px" />
       <col width="auto" />
     </colgroup>
     <RotaGridHeader days={days} />
