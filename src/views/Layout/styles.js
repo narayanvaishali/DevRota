@@ -19,7 +19,9 @@ const styles = theme => ({
   main: {
     flex: '1 0 auto',
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    minHeight: '100px',
+  },
   drawerPaper: {
     position: 'relative',
     width: 240,

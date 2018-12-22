@@ -1,6 +1,8 @@
 const styles = () => ({
   rotaContainer: {
     border: '1px solid #ddd;',
+    width: '2020px',
+    tableLayout: 'fixed',
     '& tbody': {
       '& tr': {
         '&:nth-of-type(even)': {
@@ -21,6 +23,7 @@ const styles = () => ({
           textAlign: 'center',
           lineHeight: '32px',
           color: '#888',
+          fontSize: '12px',
         },
       },
     },
@@ -33,6 +36,7 @@ const styles = () => ({
   innerRotaTable: {
     tableLayout: 'fixed',
     margin: '0',
+    width: '100%',
   },
   rotaBlock: {
     display: 'block',
@@ -63,11 +67,12 @@ const styles = () => ({
   },
   H: {
     backgroundColor: '#73f37d',
-    background: 'linear-gradient(270deg, #73f37d, #c7efce)',
+    // background: 'linear-gradient(270deg, #73f37d, #c7efce)',
   },
   O: {
-    backgroundColor: '#7de4dc',
-    background: 'linear-gradient(270deg, #7DE4DC, #53D6D2)',
+    // backgroundColor: '#7de4dc',
+    // background: 'linear-gradient(270deg, #7DE4DC, #53D6D2)',
+    backgroundColor: 'transparent',
   },
 });
 
