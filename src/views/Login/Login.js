@@ -17,8 +17,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'sabin@hotmail.com',
+      password: 'password',
       message: undefined,
     };
     this.handleLogin = this.handleLogin.bind(this);
@@ -39,7 +39,7 @@ class Login extends Component {
     auth().setPersistence(LOCAL)
       .then(() => auth().signInWithEmailAndPassword(email, password))
       .then(() => {
-        history.push('/');
+        history.push('/rota');
       })
       .catch((err) => {
         this.setState({
