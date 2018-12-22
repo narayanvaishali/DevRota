@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Layout from '../Layout';
 import RotaGrid, { RotaGridHeader, RotaGridRow } from '../../components/RotaGrid';
 import styles from './styles';
+import { Link } from 'react-router-dom';
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month - 1, 1);
@@ -30,6 +31,9 @@ const Rota = ({ month, year }) => {
 
   return (
     <Layout title="Rota" drawer="true">
+      <Fragment>
+              <Link to="/dashboard">Edit</Link>
+      </Fragment>
       <Fragment>
         <h1>
           {month}
