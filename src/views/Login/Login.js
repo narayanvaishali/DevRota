@@ -11,7 +11,7 @@ import { auth, LOCAL } from '../../db';
 
 import Layout from '../Layout';
 import styles from './styles';
-
+import Rota from '../../views/Rota';
 
 class Login extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class Login extends Component {
     auth().setPersistence(LOCAL)
       .then(() => auth().signInWithEmailAndPassword(email, password))
       .then(() => {
-        history.push('/rota');
+        history.push('/');
       })
       .catch((err) => {
         this.setState({

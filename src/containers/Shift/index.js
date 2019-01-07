@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { database } from '../../db';
 
 class ShiftCell extends Component {
@@ -10,6 +9,7 @@ class ShiftCell extends Component {
       loading: true,
       error: null,
       data: null,
+      id : null
     };
   }
 
@@ -18,28 +18,44 @@ class ShiftCell extends Component {
   }
 
   componentWillUnmount() {
-    this.dataRef.off('value');
+    //database.ref.off('value');
   }
 
   referenceData() {
-    const { user, date, shift } = this.props;
+          const { user, date, day, shift} = this.props;
 
-    this.dataRef = database.ref(`/schedules/${user}/${date}/${shift}`);
-    this.dataRef.on('value', (snap) => {
-      this.setState({
-        data: snap.val() || 'O',
-        loading: false,
-      });
+          database.ref("schedules").once("value", snapshot => {
+          const sch = snapshot.val();
+
+          //console.log('sch ' + Object.keys(sch));
+          const list = Object.keys(sch).map(id => {
+          //  console.log('sch ' + sch[id].date);
+          let _key = id;
+          let _date  = sch[id].date;
+          let _day  = sch[id].day;
+          let  _name =sch[id].name;
+          let  _shift_AM = sch[id].shift_AM; 
+          let _shift_PM  = sch[id].shift_PM;
+
+          this.setState({
+            data: shift == 'AM' ? _shift_AM : _shift_PM ,
+            id : id,
+            loading: false,
+           });
+      //  console.log('state : '+ this.state.id);
     });
+   // done(list);
+  });
   }
 
   render() {
-    const { loading, error, data } = this.state;
+    const { loading, error, data, id } = this.state;
     const { children } = this.props;
     return children({
       loading,
       error,
       data,
+      id
     }) || null;
   }
 }

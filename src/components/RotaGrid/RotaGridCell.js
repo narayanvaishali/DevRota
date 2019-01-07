@@ -10,10 +10,11 @@ const RotaGridCell = ({
   classes,
   user,
   dateKey,
-  shift,
+  day,
+  shift
 }) => (
-  <Shift user={user} date={dateKey} shift={shift}>
-    {({ loading, error, data }) => {
+  <Shift user={user} date={dateKey} day = {day} shift={shift}>
+    {({ loading, error, data, key }) => {
       if (loading) return <td>Loading...</td>;
       if (error) return <td>Error...</td>;
 
@@ -22,7 +23,8 @@ const RotaGridCell = ({
         [classes[data]]: true,
       });
 
-      return <td><a className={blockClasses}>{data}</a></td>;
+      return (
+        <td><a className={blockClasses}>{data}</a></td>);
     } }
   </Shift>
 );
