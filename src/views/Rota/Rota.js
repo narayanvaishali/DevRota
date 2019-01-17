@@ -50,8 +50,8 @@ class Rota extends Component {
     const staffList = [
       'VP',
       'TT',
-      'FG',
-      'SF',
+      'FA',
+      'PA',
     ];
 
     const days = getMonthDays(year, month);

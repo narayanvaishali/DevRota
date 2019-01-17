@@ -11,7 +11,7 @@ export function logout() {
     .signOut()
     .then(res => {
       localStorage.removeItem("token");
-    }); bra
+    }); 
 }
 
 export function login(email, pw) {
@@ -33,9 +33,9 @@ export function saveUser(user) {
 }
 
 export function isAuthenticated() {
-  if (localStorage.token) {
+  /*if (localStorage.token) {
     //@TODO: Use token similar to JWT so that user information can be displayed
 
     return localStorage.token;
-  }
+  }*/
 }

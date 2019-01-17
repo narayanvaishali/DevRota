@@ -22,30 +22,25 @@ class ShiftCell extends Component {
   }
 
   referenceData() {
-          const { user, date, day, shift} = this.props;
+     const { user, date, day, shift} = this.props;
+     var  matchingKey; 
 
-          database.ref("schedules").once("value", snapshot => {
-          const sch = snapshot.val();
+     database.ref("schedules").once("value", snapshot => {
+        const sch = snapshot.val();
+         matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date &&  sch[key].day === day));
 
-          //console.log('sch ' + Object.keys(sch));
-          const list = Object.keys(sch).map(id => {
-          //  console.log('sch ' + sch[id].date);
-          let _key = id;
-          let _date  = sch[id].date;
-          let _day  = sch[id].day;
-          let  _name =sch[id].name;
-          let  _shift_AM = sch[id].shift_AM; 
-          let _shift_PM  = sch[id].shift_PM;
+        database.ref(`schedules/${matchingKey}`).once("value", snapshot => {
+            const filerted = snapshot.val();
 
-          this.setState({
-            data: shift == 'AM' ? _shift_AM : _shift_PM ,
-            id : id,
-            loading: false,
-           });
-      //  console.log('state : '+ this.state.id);
-    });
-   // done(list);
-  });
+            if (filerted != undefined){
+            this.setState({
+                    data: shift === 'AM' ? filerted.shift_AM : shift === 'PM' ?  filerted.shift_PM : 'O',
+                    id : matchingKey,
+                    loading: false,
+              }); 
+          }
+        });
+      });
   }
 
   render() {

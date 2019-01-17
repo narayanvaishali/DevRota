@@ -7,7 +7,7 @@ import Login, { Logout } from '../../views/Login';
 import Rota from '../../views/Rota';
 import MonthlyView from '../../views/MonthlyView';
 import WeeklyView from '../../views/WeeklyView';
-
+import CreateData from '../../views/Data/CreateData';
 
 const App = () => (
   <Router>
@@ -17,6 +17,7 @@ const App = () => (
       <SecureRoute exact path="/" component={Dashboard} />
       <SecureRoute exact path="/monthlyview" component={MonthlyView} />
       <SecureRoute exact path="/weeklyview" component={WeeklyView} />
+      <SecureRoute exact path="/data" component={CreateData} />
     </Fragment>
   </Router>
 );

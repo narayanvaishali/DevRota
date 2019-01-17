@@ -7,30 +7,18 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-import Button from "@material-ui/core/Button";
-import Layout from '../Layout';
-import RotaGrid from '../../components/RotaGrid';
+import Button from '@material-ui/core/Button';
 import styles from './styles';
 import { Link } from 'react-router-dom';
-import EditIcon from "@material-ui/icons/Edit";
-import SaveIcon from "@material-ui/icons/Save";
-import CancelIcon from "@material-ui/icons/Cancel";
-import EditMonthlyView from './EditMonthlyView';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Cancel';
+import RotaGrid from '../../components/RotaGrid';
+import Layout from '../Layout';
+//import EditMonthlyView from './EditMonthlyView';
 import { database } from '../../db';
 
-
 var clonedArr= [];
-const Child = () => (
-<div className='modal'>
-      Hello, World!
-  </div>
-)
-
-const LayoutDisplay = () => (
-<div className='modal'>
-      Hello, World!
-  </div>
-)
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month, 1);
@@ -66,6 +54,8 @@ class MonthlyView extends Component {
       return {
         month: newDate.month(),
         year: newDate.year(),
+        isEdit : false,
+        show : 'V'
       };
     });
   }
@@ -77,51 +67,40 @@ class MonthlyView extends Component {
     this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'});
   }
   onChange1(newData) {
-    //console.log('newData '+ newData);
     clonedArr.push(...newData);
   }
 
-
-
   handleSave  = () => {
-
-
     let id;
-    let schedule;
-      schedule = {
-        key : '',
-        date : '',
-        day : '',
-        name : '',
-        shift_AM : '',
-        shift_PM : ''
-      };
-
-    clonedArr.forEach(function(elem) {
-        id = elem.id;
-
-        schedule = {
-          key : elem.id,
-          date : elem.date,
-          day: elem.day,
-          name: elem.name,
-          shift_AM: elem.shift == 'AM' ? elem.val : 'O',
-          shift_PM: elem.shift == 'PM' ? elem.val : 'O'
-        };
-        
-       database.ref(`/schedules/${id}`)
-          .update(schedule)
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
-          }  
-      ); 
-      this.setState({
-          isEdit: !this.state.isEdit
-       })
-      this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'});       
- }
-
- 
+      clonedArr.forEach(function(elem) {
+           var filtered; 
+            filtered =  clonedArr.filter(function(hero) {
+                      return hero.id == elem.id ;
+            });
+             // console.log(JSON.parse(JSON.stringify(filtered[0].shift)));
+            if (filtered != undefined) {
+                filtered.forEach(function(e) {
+                  if (e.shift === 'AM'){  database.ref(`/schedules/${elem.id}`)
+                            .update({"shift_AM" : e.val
+                            })
+                            //.then(res => console.log(res))
+                            //.catch(err => console.log(err));  
+                  }
+                  else {database.ref(`/schedules/${elem.id}`)
+                            .update({"shift_PM" : e.val
+                            })
+                            // .then(res => console.log(res))
+                          //  .catch(err => console.log(err));  
+                          }
+                }) 
+            }
+              }  
+            );  
+           this.setState({                          
+               isEdit: !this.state.isEdit
+           })
+            this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'}); clonedArr = []; ;       
+      }
 
  handleCancel(){
    this.setState({
@@ -136,8 +115,8 @@ class MonthlyView extends Component {
     const staffList = [
       'VP',
       'TT',
-      'FG',
-      'SF',
+      'FA',
+      'PA',
     ];
     const days = getMonthDays(year, month);
     const monthName = moment.months(month);
@@ -147,7 +126,6 @@ class MonthlyView extends Component {
         <Paper>          
            {this.state.show === 'V' ? 
           <Grid container justify="space-between" className={classes.titleContainer}>
-           
             <Grid item>
               <h3 className={classes.calendarTitle}>
                 {monthName}
@@ -231,7 +209,7 @@ class MonthlyView extends Component {
             </Grid>
           </Grid>
           }
-          <Grid container justify="center">
+          <Grid container justify="left">
             <div className={classes.rotaScroller}>
               <RotaGrid users={staffList} days={days} show ={show} onChange1={this.onChange1}
               />

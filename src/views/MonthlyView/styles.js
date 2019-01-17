@@ -2,8 +2,11 @@ const styles = theme => ({
   buttonMargin: {
     margin: theme.spacing.unit,
   },
+  buttonMarginDDL: {
+    margin: theme.spacing.unit*1,
+  },
   titleContainer: {
-    padding: '20px',
+    padding: '10px',
   },
   calendarTitle: {
     marginLeft: `${theme.spacing.unit * 2}px`,

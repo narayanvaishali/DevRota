@@ -14,7 +14,7 @@ const RotaGridCell = ({
   shift
 }) => (
   <Shift user={user} date={dateKey} day = {day} shift={shift}>
-    {({ loading, error, data, key }) => {
+    {({ loading, error, data, id }) => {
       if (loading) return <td>Loading...</td>;
       if (error) return <td>Error...</td>;
 
@@ -24,7 +24,7 @@ const RotaGridCell = ({
       });
 
       return (
-        <td><a className={blockClasses}>{data}</a></td>);
+        <td key={id}><a className={blockClasses} >{data}</a></td>);
     } }
   </Shift>
 );
@@ -35,6 +35,4 @@ RotaGridCell.propTypes = {
   dateKey: PropTypes.string.isRequired,
   shift: PropTypes.string.isRequired,
 };
-
-
 export default withStyles(styles)(RotaGridCell);

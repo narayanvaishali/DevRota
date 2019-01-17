@@ -1,12 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import RotaGridCell from './RotaGridCell';
 import EditRotaGridCell from './EditRotaGridCell';
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-
 import styles from './styles';
 
 class RotaGridRow extends Component {

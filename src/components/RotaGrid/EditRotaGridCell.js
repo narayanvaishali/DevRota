@@ -6,21 +6,40 @@ import { withStyles } from '@material-ui/core/styles';
 //import Select from 'react-select';
 import Shift from '../../containers/Shift';
 import styles from './styles';
+import { database } from '../../db';
 
-var NewSchData = [];
+ var  matchingKey, selVal;
+ var  result = [];
 
 class DropDown extends React.Component {
     constructor(props) {
     super(props);    
+
+    this.state = {
+     keyid : ''
+    };
   } 
 
-    onChangeOption=(e)=>{
-       e.preventDefault();
-      // alert (this.props.day + ' ' + e.target.value + ' '+ this.props.user  + ' '+ this.props.date  + ' '+  this.props.shift);
-        NewSchData = [{'id'  : this.props.id ,'date' : this.props.date, 'name': this.props.user, 'shift' : this.props.shift, 'day' : this.props.day, 'val' : e.target.value}];
+    componentDidMount() {
+        this.referenceData();
+    }
 
-       // console.log('NewSchData - ' + NewSchData);
-        this.props.onChange1(NewSchData);
+    referenceData() {
+        database.ref("schedules").once("value", snapshot => {
+        const sch = snapshot.val();
+        matchingKey = Object.keys(sch).find(key => (sch[key].name === this.props.user && sch[key].date === this.props.date &&  sch[key].day === this.props.day));
+              this.setState({
+                  keyid : matchingKey
+              });
+         });
+    }
+
+    onChangeOption=(e)=>{
+       e.preventDefault();  
+      selVal = e.target.value;
+      result = [];
+      result.push ({'id'  : this.state.keyid ,'date' : this.props.date, 'name': this.props.user, 'shift' : this.props.shift, 'day' : this.props.day, 'val' : selVal});
+      this.props.onChange1(result);
   }
 
   render() {
@@ -32,7 +51,7 @@ class DropDown extends React.Component {
 
         const { selectedItem, user,  date, shift, day, blockClasses, onChange1, id} = this.props;
         var selItem = selectedItem;
-        // this.props.onChange1(NewSchData);
+
         return ( <select onChange={this.onChangeOption} >
                   {
                     options.map(function (item) {
@@ -56,22 +75,17 @@ constructor(props) {
   render ()
   {
     const { user,  date, shift, day, classes, onChange1} = this.props;
-    //this.setState({NewScheduleData : onChange1});
-    //console.log ('edit cell shift : ' + shift)
     return (
       <Shift user={user} date={date} shift={shift} day={day}> 
         {({ loading, error, data, id }) => {
           if (loading) return <td>Loading...</td>;
           if (error) return <td>Error...</td>;
 
-          //console.log('editrota ->' + id);
-
           const blockClasses = classNames({
             [classes.rotaBlock]: true//,
             //[classes[data]]: true,
           });        
           let selectedOption = data;
-         // let id = key;
             return (            
                       <DropDown selectedItem = {selectedOption} user={user} date={date} shift={shift} day ={day}
                           blockClasses= {blockClasses} onChange1={onChange1} id={id}>
@@ -85,6 +99,9 @@ constructor(props) {
 class EditRotaGridCell extends Component {
   constructor(props) {
     super(props);
+  }  
+  componentDidMount() {
+    //this.referenceData();
   }
 
   render ()
