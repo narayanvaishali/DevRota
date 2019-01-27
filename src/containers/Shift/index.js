@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { database } from '../../db';
+import moment from 'moment';
 
 class ShiftCell extends Component {
   constructor(props) {
@@ -9,43 +10,63 @@ class ShiftCell extends Component {
       loading: true,
       error: null,
       data: null,
-      id : null
+      id : null,
+      temp : 0
     };
+
+    this.referenceData = this.referenceData.bind(this);
   }
 
-  componentDidMount() {
-    this.referenceData();
+  componentWillMount() { 
+    this.referenceData(null);   
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.referenceData(nextProps.date);
+  }
   componentWillUnmount() {
     //database.ref.off('value');
   }
 
-  referenceData() {
-     const { user, date, day, shift} = this.props;
-     var  matchingKey; 
+  referenceData(thedate) {
+    var {classes, user, shift, month, year,date, day,days} = this.props;
+     var newdt = (thedate === null || thedate === undefined) ? date : thedate;
 
-     database.ref("schedules").once("value", snapshot => {
-        const sch = snapshot.val();
-         matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date &&  sch[key].day === day));
+     var  matchingKey, snapshotexists = false; 
+     var noData = false;
+     let currentComponent = this;
 
-        database.ref(`schedules/${matchingKey}`).once("value", snapshot => {
-            const filerted = snapshot.val();
+      database.ref("schedules").once("value", snapshot => {
+      var sch = snapshot.val();   
+      matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === newdt &&  sch[key].day === day));
+                 // console.log('matchingKey : '+ matchingKey);
 
-            if (filerted != undefined){
-            this.setState({
-                    data: shift === 'AM' ? filerted.shift_AM : shift === 'PM' ?  filerted.shift_PM : 'O',
+       if (matchingKey != undefined){
+          database.ref(`schedules/${matchingKey}`).once("value", snapshot => {
+           const filerted = snapshot.val();
+
+          if (filerted != undefined){
+                  this.setState({
+                     data: shift === 'AM' ? filerted.shift_AM : shift === 'PM' ?  filerted.shift_PM : 'O',
                     id : matchingKey,
                     loading: false,
-              }); 
+                }); 
+              }
+            });
           }
+           else{
+                 this.setState({
+                    data: 'O',
+                    id : null,
+                    loading: false
+              }); 
+           }
         });
-      });
   }
 
   render() {
-    const { loading, error, data, id } = this.state;
-    const { children } = this.props;
+    var { loading, error, data, id } = this.state;
+    var { children } = this.props;
     return children({
       loading,
       error,
@@ -54,7 +75,6 @@ class ShiftCell extends Component {
     }) || null;
   }
 }
-
 
 ShiftCell.propTypes = {
   user: PropTypes.string.isRequired,

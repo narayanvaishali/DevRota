@@ -18,26 +18,18 @@ import Layout from '../Layout';
 //import EditMonthlyView from './EditMonthlyView';
 import { database } from '../../db';
 
-var clonedArr= [];
-
-const getMonthDays = (year, month) => {
-  const date = new Date(year, month, 1);
-  const result = [];
-  while (date.getMonth() === month) {
-    result.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  return result;
-};
+var clonedArr = [];
 
 class MonthlyView extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       isEdit : false,
       show : 'V',
+      offset : 0,
       newscheduledata : []
     };
     this.handleNavigation = this.handleNavigation.bind(this);
@@ -47,20 +39,33 @@ class MonthlyView extends Component {
     this.onChange1 = this.onChange1.bind(this);
   }
  
-  handleNavigation(offset) {
-    this.setState((prev) => {
-      const newDate = moment().year(prev.year).month(prev.month).date(1)
-        .add(offset, 'M');
-      return {
-        month: newDate.month(),
+ getMonthDays = (year, month) => {
+  var date = new Date(year, month, 1);
+  //console.log(month);
+  //console.log(date.getMonth());
+
+  var result = [];
+  while (date.getMonth() === month) {
+    result.push(new Date(date));
+    date.setDate(date.getDate() + 1);    
+  }
+  //console.log(result);
+  return result;
+};
+
+handleNavigation = (offset) => {
+//  this.setState(prevState=>({...prevState}));
+
+  this.setState((prevState) => {
+  var newDate = moment().year(prevState.year).month(prevState.month).date(1).add(offset, 'M');
+   return {  month: newDate.month(),
         year: newDate.year(),
         isEdit : false,
-        show : 'V'
-      };
-    });
-  }
+        show : 'V'}
+  })
+}
 
-  handleEditRota(year, month) {
+handleEditRota(year, month) {
     this.setState({
         isEdit: !this.state.isEdit
       })
@@ -99,29 +104,35 @@ class MonthlyView extends Component {
            this.setState({                          
                isEdit: !this.state.isEdit
            })
-            this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'}); clonedArr = []; ;       
+            this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'}); clonedArr = [];     
       }
 
- handleCancel(){
-   this.setState({
-        isEdit: !this.state.isEdit
-      })
-    this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'});
- }
+  handleCancel(){
+    clonedArr = [];
+    this.setState({
+          isEdit: !this.state.isEdit
+        })
+      this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'});
+  }
 
   render() {
-    const { month, year,isEdit,values,show } = this.state;
-    const { classes } = this.props;
+    var { month, year,isEdit,values,show } = this.state;
+    
+    //console.log('month '+ month +' '+ year);
+    var { classes } = this.props;
     const staffList = [
       'VP',
       'TT',
       'FA',
       'PA',
     ];
-    const days = getMonthDays(year, month);
-    const monthName = moment.months(month);
-    return (
-      
+    var days = '';
+    days = this.getMonthDays(year, month);
+    //console.log(year + ' '+ month);
+    //console.log(days);
+
+    var monthName = moment.months(month);
+    return (      
       <Layout title="Rota" drawer="true">
         <Paper>          
            {this.state.show === 'V' ? 
@@ -133,7 +144,7 @@ class MonthlyView extends Component {
                 {year}
               </h3>
             </Grid>            
-            <Grid item>
+          <Grid item>
               <Button
                         variant="fab"
                         aria-label="Edit"
@@ -211,7 +222,7 @@ class MonthlyView extends Component {
           }
           <Grid container justify="left">
             <div className={classes.rotaScroller}>
-              <RotaGrid users={staffList} days={days} show ={show} onChange1={this.onChange1}
+              <RotaGrid users={staffList} days={days} show ={show} onChange1={this.onChange1} month={month} year={year}
               />
             </div>
           </Grid>         

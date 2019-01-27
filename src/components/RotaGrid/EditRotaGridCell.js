@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { withStyles } from '@material-ui/core/styles';
 //import Select from 'react-select';
 import Shift from '../../containers/Shift';
@@ -26,12 +25,26 @@ class DropDown extends React.Component {
 
     referenceData() {
         database.ref("schedules").once("value", snapshot => {
-        const sch = snapshot.val();
+        var sch = snapshot.val();
         matchingKey = Object.keys(sch).find(key => (sch[key].name === this.props.user && sch[key].date === this.props.date &&  sch[key].day === this.props.day));
+
+         if (matchingKey != undefined){
               this.setState({
                   keyid : matchingKey
               });
-         });
+         }
+           /* else{
+                    let dt = {};
+                    dt = {
+                      date: this.props.date,
+                      day:  this.props.day,
+                      name :  this.props.user,
+                      shift_AM :  sch[id].shift_AM,
+                      shift_PM : sch[id].shift_PM
+                    }
+                    database.push(dt)
+            }*/
+      });
     }
 
     onChangeOption=(e)=>{

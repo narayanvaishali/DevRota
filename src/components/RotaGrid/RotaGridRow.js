@@ -13,9 +13,7 @@ class RotaGridRow extends Component {
 
   render ()
   {
-    const {classes, staff, days, show, onChange1} = this.props;
-    //console.log( 'RotaGridRow : ' + this.props.onChange1);
-
+    var {classes, staff, days, show, onChange1, month, year} = this.props;
     const shifts = ['AM', 'PM'];
     return (
     <tr>
@@ -29,19 +27,19 @@ class RotaGridRow extends Component {
                 <tr>
                   {                   
                     days.map((day) => {
-                    //const dayKey = moment(day).format('YYYYMMDD');
-                     const dayKey = moment(day).format('DD/MM/YYYY');
-                     const check = moment(day, 'YYYY/MM/DD');
+                     var dayKey = moment(day).format('DD/MM/YYYY');
+                     var check = moment(day, 'YYYY/MM/DD');
 
                     return shifts.map(shift => ( 
                                        
                       <EditRotaGridCell
                         user={staff}
                         shift={shift}
+                        month ={month} 
+                        year ={year}
                         dateKey={dayKey}
                         day = {check.format('D')}
-                        //key={`${dayKey}${shift}`}
-                        //key = {id}
+                        days= {days} 
                         classes = {classes}
                         onChange1={onChange1}
                       />
@@ -59,22 +57,21 @@ class RotaGridRow extends Component {
                 <tr>
                   {   
                     days.map((day) => {
-                    const dayKey = moment(day).format('DD/MM/YYYY');
-                    const check = moment(day, 'YYYY/MM/DD');
+                    var dayKey = moment(day).format('DD/MM/YYYY');
+                    var check = moment(day, 'YYYY/MM/DD');
 
-                    return shifts.map(shift => (
-                  
+                    return shifts.map(shift => (                  
                       <RotaGridCell
                         user={staff}
                         shift={shift}
+                        month ={month} 
+                        year ={year}
                         dateKey={dayKey}
                         day = {check.format('D')}
-                       // key={`${dayKey}${shift}`}
-                        //key = {id}
+                        days= {days}                         
                       />
                     ));
                   })
-                  
                   }
                 </tr>
               </tbody>
@@ -86,69 +83,6 @@ class RotaGridRow extends Component {
   }
 }
 
-
-/*
-const RotaGridRow = ({ classes, staff, days, show, onChange}) => {
-  const shifts = ['AM', 'PM'];
-  return (
-    <tr>
-      <td className={classes.rotaUserName}>
-        {staff}
-      </td>
-      <td>
-         { show === 'E' ?
-            <table className={classes.innerRotaTable}>
-              <tbody>
-                <tr>
-                  {                   
-                    days.map((day) => {
-                    const dayKey = moment(day).format('YYYYMMDD');
-                    const check = moment(day, 'YYYY/MM/DD');
-                    return shifts.map(shift => (
-                  
-                      <EditRotaGridCell
-                        user={staff}
-                        shift={shift}
-                        dateKey={dayKey}
-                        day = {check.format('D')}
-                        key={`${dayKey}${shift}`}
-                        onChange={onChange1}
-                      />
-                    ));
-                  })
-                  
-                  }
-                </tr>
-              </tbody>
-            </table>
-            :
-           <table className={classes.innerRotaTable}>
-              <tbody>
-                <tr>
-                  {                   
-                    days.map((day) => {
-                    const dayKey = moment(day).format('YYYYMMDD');
-                    return shifts.map(shift => (
-                  
-                      <RotaGridCell
-                        user={staff}
-                        shift={shift}
-                        dateKey={dayKey}
-                        key={`${dayKey}${shift}`}
-                      />
-                    ));
-                  })
-                  
-                  }
-                </tr>
-              </tbody>
-            </table>   
-         }
-      </td>
-    </tr>
-  );
-};
-*/
 RotaGridRow.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
   staff: PropTypes.string.isRequired,

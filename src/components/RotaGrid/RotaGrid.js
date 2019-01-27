@@ -8,7 +8,6 @@ import RotaGridHeader from './RotaGridHeader';
 import RotaGridRow from './RotaGridRow';
 import styles from './styles';
 
-
 class RotaGrid extends Component {
   constructor(props) {
     super(props);
@@ -16,9 +15,7 @@ class RotaGrid extends Component {
 
   render ()
   {
-    const { users, days, classes, show, onChange1} = this.props;
-    //console.log( 'RotaGrid : ' + this.props.onChange1);
-
+    var { users, days, classes, show, onChange1, month,year } = this.props;
     return(
        <table className={classes.rotaContainer}>
         <colgroup>
@@ -29,13 +26,12 @@ class RotaGrid extends Component {
         <tbody>
           
           {users.map(staff => (
-            <RotaGridRow staff={staff} days={days} show={show} onChange1={onChange1}/>
+            <RotaGridRow staff={staff} days={days} show={show} onChange1={onChange1}  month={month} year={year}/>
           ))}
         </tbody>
       </table> 
     );
   }
-
 }
 /*
 const Rota = ({ users, days, classes, show, onChange1}) => (
