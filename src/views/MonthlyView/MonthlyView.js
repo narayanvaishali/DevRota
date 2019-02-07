@@ -19,6 +19,7 @@ import Layout from '../Layout';
 import { database } from '../../db';
 
 var clonedArr = [];
+const db = database;
 
 class MonthlyView extends Component {
   constructor(props) {
@@ -38,24 +39,22 @@ class MonthlyView extends Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.onChange1 = this.onChange1.bind(this);
   }
- 
+
+  componentWillUnmount() {
+    database.ref.set(null);
+  }
+
  getMonthDays = (year, month) => {
   var date = new Date(year, month, 1);
-  //console.log(month);
-  //console.log(date.getMonth());
-
   var result = [];
   while (date.getMonth() === month) {
     result.push(new Date(date));
     date.setDate(date.getDate() + 1);    
   }
-  //console.log(result);
   return result;
 };
 
 handleNavigation = (offset) => {
-//  this.setState(prevState=>({...prevState}));
-
   this.setState((prevState) => {
   var newDate = moment().year(prevState.year).month(prevState.month).date(1).add(offset, 'M');
    return {  month: newDate.month(),
@@ -65,42 +64,121 @@ handleNavigation = (offset) => {
   })
 }
 
-handleEditRota(year, month) {
+handleEditRota() {
     this.setState({
         isEdit: !this.state.isEdit
-      })
-    this.state.isEdit ? this.setState ({ show : 'E'}) : this.setState ({ show : 'V'});
+      });
+    this.state.isEdit ? this.setState ({ show: 'E' }) : this.setState ({ show: 'V' });
   }
   onChange1(newData) {
-    clonedArr.push(...newData);
+    this.clonedArr.push(...newData);
   }
 
   handleSave  = () => {
-    let id;
-      clonedArr.forEach(function(elem) {
-           var filtered; 
-            filtered =  clonedArr.filter(function(hero) {
-                      return hero.id == elem.id ;
-            });
-             // console.log(JSON.parse(JSON.stringify(filtered[0].shift)));
-            if (filtered != undefined) {
-                filtered.forEach(function(e) {
-                  if (e.shift === 'AM'){  database.ref(`/schedules/${elem.id}`)
-                            .update({"shift_AM" : e.val
-                            })
-                            //.then(res => console.log(res))
-                            //.catch(err => console.log(err));  
+     //console.log('clonedArr  : ' + JSON.stringify(clonedArr));
+
+    var getMatchingKey = (user,date,day,shift,val) => {
+        //console.log('here func : ' + user + ' '+ date + ' '+ day);
+        
+        var matchingKey;
+          database.ref('schedules').once('value', snapshot => {
+              var sch = snapshot.val();   
+               if(shift === 'AM')
+               {
+                    matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date && sch[key].day === day && sch[key].shift_AM != val));  
+               }
+              else{
+                    matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date && sch[key].day === day && sch[key].shift_PM != val));  
                   }
-                  else {database.ref(`/schedules/${elem.id}`)
-                            .update({"shift_PM" : e.val
-                            })
-                            // .then(res => console.log(res))
-                          //  .catch(err => console.log(err));  
+          });  
+            return matchingKey;            
+    }
+    var getScheduledata = (id, done) => {
+      db.ref(`schedules/${id}`).once('value', snapshot => {
+        const schedule = snapshot.val();
+        done(schedule);
+      });
+    }
+    var  updateRota  = (id, value, shift, done) => {
+      if (shift === 'AM'){  db.ref(`schedules/${id}`)
+                .update({"shift_AM" : value
+                })
+                .then(res =>{done(false)})
+                .catch(err => {
+                  done(err, undefined);
+                });
+      }
+      else {db.ref(`schedules/${id}`)
+                .update({"shift_PM" : value
+                })
+                .then(res =>{done(false)})
+                .catch(err => {
+                  done(err, undefined);
+                });
+      }
+    }
+
+    var  addSchedule  = (arr, done) => {
+
+      for (var i=0; i<arr.length; i++) {
+        db.ref(`schedules`)
+        .push(arr[i])
+        .then(res => done(false, res))
+        .catch(err => done(err, undefined));
+      }
+    }
+
+    var filtered,  idx;
+    var result = [];
+
+        clonedArr.forEach(function(elem) {
+          if((elem.id != null) || (elem.id != undefined))  
+          {
+                filtered =  clonedArr.filter(function(hero) {
+                  return hero.id == elem.id ;
+                });
+                if (filtered !== undefined) {
+                    filtered.forEach(function(e) {
+                       updateDt = updateRota(e.id, e.val, e.shift, (err, response) => {
+                            //console.log(response);
+                          });
+                    }) 
+                }
+          }
+          else{
+                      idx = -1;
+                      //console.log('result : ' + JSON.stringify(result));
+                      for (var i=0; i<clonedArr.length; i++) {
+                           /* for(var name in clonedArr[i]) r += name + " :: " + clonedArr[i][name] + ", "; 
+                            r += "\n";*/
+                      if((elem.name === clonedArr[i].name && elem.date === clonedArr[i].date && elem.day === clonedArr[i].day && elem.shift !== clonedArr[i].shift)){
+                          //console.log('val  ' +  elem.val + ' shift ' + elem.shift + ' shift PM ' + clonedArr[i].shift_PM + ' shift AM ' + clonedArr[i].shift_AM  );
+                          //console.log();
+
+                          idx = result.findIndex(x => (x.name === clonedArr[i].name && x.date === clonedArr[i].date && x.day === clonedArr[i].day));
+                          //console.log('idx  '+ idx);
+
+                          if (idx != -1){
+                              if(elem.shift === 'AM')
+                                result[idx].shift_AM = elem.val;
+                              else
+                                result[idx].shift_PM = elem.val;
                           }
-                }) 
-            }
-              }  
-            );  
+                          else{
+                           if(elem.shift === 'AM')
+                              result.push ({'id'  : null ,'date' : elem.date, 'name': elem.name, 'day' : elem.day, 'shift_AM' : elem.val, 'shift_PM' : clonedArr[i].val});
+                           else
+                              result.push ({'id'  : null ,'date' : elem.date, 'name': elem.name, 'day' : elem.day, 'shift_PM' : elem.val, 'shift_AM' : clonedArr[i].val});
+                        }
+                      }
+                   }  
+              }
+          });   
+                  if (result != undefined){
+                    var a = addSchedule(result, (err, response) => {
+                   // console.log(response);
+               });
+          }   
            this.setState({                          
                isEdit: !this.state.isEdit
            })
@@ -117,8 +195,6 @@ handleEditRota(year, month) {
 
   render() {
     var { month, year,isEdit,values,show } = this.state;
-    
-    //console.log('month '+ month +' '+ year);
     var { classes } = this.props;
     const staffList = [
       'VP',
@@ -128,8 +204,6 @@ handleEditRota(year, month) {
     ];
     var days = '';
     days = this.getMonthDays(year, month);
-    //console.log(year + ' '+ month);
-    //console.log(days);
 
     var monthName = moment.months(month);
     return (      
@@ -151,7 +225,7 @@ handleEditRota(year, month) {
                         className={classes.button}
                         mini
                         color="primary"
-                        onClick={() => this.handleEditRota(year, month)}
+                        onClick={() => this.handleEditRota()}
                       >
                         <EditIcon />
                       </Button>
@@ -193,7 +267,7 @@ handleEditRota(year, month) {
                 className={classes.button}
                 mini
                 color="primary"
-                onClick={() => this.handleEditRota(year, month)}
+                onClick={() => this.handleEditRota()}
               >
               <EditIcon />
              </Button>
@@ -231,7 +305,5 @@ handleEditRota(year, month) {
     );
   }
 }
-
-//export default  withStyles(styles)(MonthlyView);
 
 export default  (withStyles(styles)(MonthlyView));

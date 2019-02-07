@@ -19,6 +19,18 @@ class DropDown extends React.Component {
     };
   } 
 
+   getMatchingKey = (user,date,day) => {
+       // console.log('here func edit: ' + user + ' '+ date + ' '+ day);
+        var matchingKey;
+          database.ref("schedules").once("value", snapshot => {
+              var sch = snapshot.val();   
+              matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date &&  sch[key].day === day));
+          });  
+
+         // console.log('here func edit matchingKey: ' + matchingKey);
+            return matchingKey;            
+    }
+
     componentDidMount() {
         this.referenceData();
     }
@@ -33,17 +45,11 @@ class DropDown extends React.Component {
                   keyid : matchingKey
               });
          }
-           /* else{
-                    let dt = {};
-                    dt = {
-                      date: this.props.date,
-                      day:  this.props.day,
-                      name :  this.props.user,
-                      shift_AM :  sch[id].shift_AM,
-                      shift_PM : sch[id].shift_PM
-                    }
-                    database.push(dt)
-            }*/
+            else{
+               this.setState({
+                  keyid : null
+              });
+            }
       });
     }
 
@@ -51,7 +57,10 @@ class DropDown extends React.Component {
        e.preventDefault();  
       selVal = e.target.value;
       result = [];
+
       result.push ({'id'  : this.state.keyid ,'date' : this.props.date, 'name': this.props.user, 'shift' : this.props.shift, 'day' : this.props.day, 'val' : selVal});
+      
+     // console.log(' result ' + console.log(JSON.stringify(result)));
       this.props.onChange1(result);
   }
 

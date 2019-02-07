@@ -25,7 +25,7 @@ class ShiftCell extends Component {
     this.referenceData(nextProps.date);
   }
   componentWillUnmount() {
-    //database.ref.off('value');
+    //database.ref.set(null);
   }
 
   referenceData(thedate) {
@@ -35,7 +35,7 @@ class ShiftCell extends Component {
      var  matchingKey, snapshotexists = false; 
      var noData = false;
      let currentComponent = this;
-
+     
       database.ref("schedules").once("value", snapshot => {
       var sch = snapshot.val();   
       matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === newdt &&  sch[key].day === day));
@@ -46,11 +46,22 @@ class ShiftCell extends Component {
            const filerted = snapshot.val();
 
           if (filerted != undefined){
+
+            if(shift === 'AM')
+              {
                   this.setState({
-                     data: shift === 'AM' ? filerted.shift_AM : shift === 'PM' ?  filerted.shift_PM : 'O',
+                     data: filerted.shift_AM,
                     id : matchingKey,
                     loading: false,
                 }); 
+              }
+              else{
+                 this.setState({
+                     data: filerted.shift_PM,
+                    id : matchingKey,
+                    loading: false,
+                }); 
+              }
               }
             });
           }
