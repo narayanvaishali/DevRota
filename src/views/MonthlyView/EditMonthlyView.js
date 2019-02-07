@@ -7,11 +7,21 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-
+import Button from "@material-ui/core/Button";
 import Layout from '../Layout';
+
 import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
 import { Link } from 'react-router-dom';
+import EditIcon from "@material-ui/icons/Edit";
+import SaveIcon  from "@material-ui/icons/Save";
+
+const Child = () => (
+<div className='modal'>
+      Hello, World!
+  </div>
+)
+
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month, 1);
@@ -23,14 +33,21 @@ const getMonthDays = (year, month) => {
   return result;
 };
 
-class Rota extends Component {
+class EditMonthlyView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      isEdit : false,
+      values: [
+            { name: 'H', id: 'H' },
+            { name: 'O', id: 'O' },
+            { name: 'A', id: 'A' }
+        ]
     };
     this.handleNavigation = this.handleNavigation.bind(this);
+    this.handleEditRota = this.handleEditRota.bind(this);
   }
 
   handleNavigation(offset) {
@@ -43,21 +60,26 @@ class Rota extends Component {
       };
     });
   }
-
+  handleEditRota(year, month) {
+  /*this.setState({
+      isEdit: !this.state.isEdit
+    })*/
+  }
   render() {
-    const { month, year } = this.state;
+    const { month, year,isEdit,values } = this.state;
     const { classes } = this.props;
     const staffList = [
       'VP',
       'TT',
-      'FA',
-      'PA',
+      'FG',
+      'SF',
     ];
+
 
     const days = getMonthDays(year, month);
     const monthName = moment.months(month);
     return (
-      <Layout title="Rota" drawer="true">
+      <Layout title="Edit Rota  ----" drawer="true">
         <Paper>
           <Grid container justify="space-between" className={classes.titleContainer}>
             <Grid item>
@@ -67,30 +89,33 @@ class Rota extends Component {
                 {year}
               </h3>
             </Grid>
+            
             <Grid item>
-              <Fab
-                size="small"
-                color="secondary"
-                aria-label="Previous"
-                className={classes.buttonMargin}
-                onClick={() => this.handleNavigation(-1)}
-              >
-                <ChevronLeft />
-              </Fab>
-              <Fab
-                size="small"
-                color="secondary"
-                aria-label="Next"
-                className={classes.buttonMargin}
-                onClick={() => this.handleNavigation(1)}
-              >
-                <ChevronRight />
-              </Fab>
+              <Button
+                        variant="fab"
+                        aria-label="Edit"
+                        className={classes.button}
+                        mini
+                        color="primary"
+                        onClick={() => this.handleEditRota(year, month)}
+                      >
+                          </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    className={classes.addButton}
+                    variant="fab"
+                    mini
+                    aria-label="Save"
+                    color="primary"
+                    onClick={() => this.props.history.push("/staffs/add")}
+                  >
+              </Button>              
             </Grid>
           </Grid>
           <Grid container justify="center">
             <div className={classes.rotaScroller}>
-              <RotaGrid users={staffList} days={days} />
+              <RotaGrid users={staffList} days={days} show ='E'/>
             </div>
           </Grid>
         </Paper>
@@ -99,4 +124,4 @@ class Rota extends Component {
   }
 }
 
-export default withStyles(styles)(Rota);
+export default withStyles(styles)(EditMonthlyView);

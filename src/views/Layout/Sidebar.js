@@ -29,19 +29,27 @@ const Sidebar = ({ classes }) => (
       <ListItem
         button
         component={Link}
-        to="/rota"
+        to="/"
       >
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
-      <ListItem button>
+    </List>
+    <List>
+    <ListItem
+        button
+        component={Link}
+        to="/monthlyview"
+      >      
         <ListItemIcon>
-          <StarIcon />
+            <StarIcon />
         </ListItemIcon>
         <ListItemText primary="Monthly View" />
       </ListItem>
+    </List>
+    <List>
       <ListItem button>
         <ListItemIcon>
           <StarIcon />
@@ -57,6 +65,18 @@ const Sidebar = ({ classes }) => (
         <ListItemText primary="Day View" />
       </ListItem>
     </List>
+   {/*  <List>
+    <ListItem
+        button
+        component={Link}
+        to="/data"
+      >      
+        <ListItemIcon>
+            <StarIcon />
+        </ListItemIcon>
+        <ListItemText primary="generate data" />
+      </ListItem>
+    </List> */}
     <Divider />
     <List>
       <ListItem

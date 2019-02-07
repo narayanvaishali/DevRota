@@ -1,7 +1,7 @@
 const styles = () => ({
   rotaContainer: {
     border: '1px solid #ddd;',
-    width: '2020px',
+    width: '2630px',
     tableLayout: 'fixed',
     '& tbody': {
       '& tr': {

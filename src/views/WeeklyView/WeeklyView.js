@@ -22,8 +22,37 @@ const getMonthDays = (year, month) => {
   }
   return result;
 };
+/*
+const getWeekDays = (year, month) => {
+    var startDate = moment([year, month])
+    var firstDay = moment(startDate).startOf('month');
+    var endDay = moment(startDate).endOf('month');
 
-class Rota extends Component {
+    //# Create a range for the month we can iterate through
+    var monthRange = moment.range(firstDay, endDay)
+
+    //# Get all the weeks during the current month
+    var weeks = [];
+      for (let mday of monthRange.by('days')) {
+        if (weeks.indexOf(mday.week()) === -1) {
+          weeks.push(mday.week());
+        }
+      }
+    var startOfWeek = moment().startOf('isoWeek');
+    var endOfWeek = moment().endOf('isoWeek');
+
+    var days = [];
+    var day = startOfWeek;
+
+    while (day <= endOfWeek) {
+        days.push(day.toDate());
+        day = day.clone().add(1, 'd');
+    }
+
+    return days;
+};
+*/
+class WeeklyView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,11 +79,12 @@ class Rota extends Component {
     const staffList = [
       'VP',
       'TT',
-      'FA',
-      'PA',
+      'FG',
+      'SF',
     ];
 
     const days = getMonthDays(year, month);
+  //  const days = getWeekDays(year, month);
     const monthName = moment.months(month);
     return (
       <Layout title="Rota" drawer="true">
@@ -99,4 +129,4 @@ class Rota extends Component {
   }
 }
 
-export default withStyles(styles)(Rota);
+export default withStyles(styles)(WeeklyView);
