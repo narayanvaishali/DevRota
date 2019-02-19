@@ -5,11 +5,12 @@ import Layout from '../Layout';
 const LoginIndex = () => (
   <Layout>
     <Register
-        titleText="Dev Rota"
-        subtitleText={<span>Register and Login to see it in action</span>}
-        primaryBtnText="Login"
-        primaryBtnLink="/login" />
-   </Layout>
+      titleText="Dev Rota"
+      subtitleText={<span>Register and Login to see it in action</span>}
+      primaryBtnText="Login"
+      primaryBtnLink="/login"
+    />
+  </Layout>
 
 );
 

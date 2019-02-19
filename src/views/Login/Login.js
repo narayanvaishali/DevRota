@@ -11,7 +11,7 @@ import { auth, LOCAL } from '../../db';
 
 import Layout from '../Layout';
 import styles from './styles';
-import Rota from '../../views/Rota';
+import Rota from '../Rota';
 
 class Login extends Component {
   constructor(props) {

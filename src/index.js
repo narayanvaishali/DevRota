@@ -9,8 +9,9 @@ import theme from './theme';
 ReactDOM.render(
   <AppProvider theme={theme}>
     <App />
-</AppProvider>, document.getElementById('root'));
-//registerServiceWorker();
+  </AppProvider>, document.getElementById('root'),
+);
+// registerServiceWorker();
 
 
 /* const store = createStore(reducer);

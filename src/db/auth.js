@@ -1,4 +1,4 @@
-import { ref, firebaseAuth } from "firebase";
+import { ref, firebaseAuth } from 'firebase';
 
 export function auth(email, pw) {
   return firebaseAuth()
@@ -9,9 +9,9 @@ export function auth(email, pw) {
 export function logout() {
   return firebaseAuth()
     .signOut()
-    .then(res => {
-      localStorage.removeItem("token");
-    }); 
+    .then((res) => {
+      localStorage.removeItem('token');
+    });
 }
 
 export function login(email, pw) {
@@ -27,15 +27,15 @@ export function saveUser(user) {
     .child(`users/${user.uid}/info`)
     .set({
       email: user.email,
-      uid: user.uid
+      uid: user.uid,
     })
     .then(() => user);
 }
 
 export function isAuthenticated() {
-  /*if (localStorage.token) {
+  /* if (localStorage.token) {
     //@TODO: Use token similar to JWT so that user information can be displayed
 
     return localStorage.token;
-  }*/
+  } */
 }

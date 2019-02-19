@@ -9,8 +9,8 @@ const styles = theme => ({
     marginLeft: `${theme.spacing.unit * 2}px`,
   },
   rotaScroller: {
-    width: '100%', 
-    overflow: 'scroll' 
+    width: '100%',
+    overflow: 'scroll',
   },
 });
 
