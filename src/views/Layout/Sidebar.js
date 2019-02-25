@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
 import { withStyles } from '@material-ui/core/styles';
-
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -50,7 +48,10 @@ const Sidebar = ({ classes }) => (
       </ListItem>
     </List>
     <List>
-      <ListItem button>
+      <ListItem button
+        component={Link}
+        to="/weeklyview"
+       >
         <ListItemIcon>
           <StarIcon />
         </ListItemIcon>

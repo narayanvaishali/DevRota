@@ -11,9 +11,20 @@ class RotaGridRow extends Component {
     super(props);
   }
 
+ componentWillUnmount() {
+   // database.ref.set(null);
+    this.forceUpdate();
+   }
+
+   componentDidMount(){
+        this.forceUpdate();
+   }
+
   render ()
   {
     var {classes, staff, days, show, onChange1, month, year} = this.props;
+   //console.log('RotaGridRow :  ' + JSON.stringify(days));
+
     const shifts = ['AM', 'PM'];
     return (
     <tr>
