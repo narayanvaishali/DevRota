@@ -47,7 +47,7 @@ const Sidebar = ({ classes }) => (
         <ListItemText primary="Monthly View" />
       </ListItem>
     </List>
-    <List>
+    {/* <List>
       <ListItem button
         component={Link}
         to="/weeklyview"
@@ -65,7 +65,7 @@ const Sidebar = ({ classes }) => (
         </ListItemIcon>
         <ListItemText primary="Day View" />
       </ListItem>
-    </List>
+    </List> */}
    {/*  <List>
     <ListItem
         button
