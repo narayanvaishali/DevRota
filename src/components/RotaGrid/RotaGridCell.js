@@ -10,20 +10,9 @@ class RotaGridCell extends Component {
     super(props);
   }
 
-componentWillUnmount() {
-   // database.ref.set(null);
-    this.forceUpdate();
-   }
-
-   componentDidMount(){
-        this.forceUpdate();
-   }
-
   render ()
   {
       var {classes, user, shift, month, year,dateKey, day,days} = this.props;
-      // console.log('RotaGridCell :  ' + JSON.stringify(days));
-
       return(
             <Shift classes={classes} user={user} date={dateKey} day={day} shift={shift} month={month} year={year} days={days}>
                   {({ loading, error, data, id }) => {

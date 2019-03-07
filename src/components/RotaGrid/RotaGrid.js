@@ -13,21 +13,9 @@ class RotaGrid extends Component {
     super(props);
   }
 
-componentWillUnmount() {
-   // database.ref.set(null);
-    this.forceUpdate();
-   }
-
-   componentDidMount(){
-        this.forceUpdate();
-   }
-
   render ()
   {
     var { users, days, classes, show, onChange1, month,year } = this.props;
-
-    //console.log('RotaGrid :  ' + JSON.stringify(days));
-
     return(
        <table className={classes.rotaContainer}>
         <colgroup>
@@ -45,7 +33,22 @@ componentWillUnmount() {
     );
   }
 }
-
+/*
+const Rota = ({ users, days, classes, show, onChange1}) => (
+  <table className={classes.rotaContainer}>
+    <colgroup>
+      <col width="250px" />
+      <col width="auto" />
+    </colgroup>
+    <RotaGridHeader days={days} />
+    <tbody>
+      {users.map(staff => (
+        <RotaGridRow staff={staff} days={days} show={show} onChange={onChange1}/>
+      ))}
+    </tbody>
+  </table>
+);
+**/
 RotaGrid.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
