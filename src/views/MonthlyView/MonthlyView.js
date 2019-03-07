@@ -19,8 +19,6 @@ import Layout from '../Layout';
 import { database } from '../../db';
 
 var clonedArr = [];
-var days = '';
-
 const db = database;
 
 class MonthlyView extends Component {
@@ -33,7 +31,6 @@ class MonthlyView extends Component {
       isEdit : false,
       show : 'V',
       offset : 0,
-      days : [],
       newscheduledata : []
     };
     this.handleNavigation = this.handleNavigation.bind(this);
@@ -44,17 +41,11 @@ class MonthlyView extends Component {
   }
 
   componentWillUnmount() {
-   // database.ref.set(null);
-    this.forceUpdate();
-   }
-
-   componentDidMount(){
-        this.forceUpdate();
-   }
+    database.ref.set(null);
+  }
 
  getMonthDays = (year, month) => {
   var date = new Date(year, month, 1);
-
   var result = [];
   while (date.getMonth() === month) {
     result.push(new Date(date));
@@ -80,11 +71,11 @@ handleEditRota() {
     this.state.isEdit ? this.setState ({ show: 'E' }) : this.setState ({ show: 'V' });
   }
   onChange1(newData) {
-      clonedArr.push(...newData);
+    this.clonedArr.push(...newData);
   }
 
   handleSave  = () => {
-     //console.log('clonedArr save : ' + JSON.stringify(clonedArr));
+     //console.log('clonedArr  : ' + JSON.stringify(clonedArr));
 
     var getMatchingKey = (user,date,day,shift,val) => {
         //console.log('here func : ' + user + ' '+ date + ' '+ day);
@@ -137,7 +128,7 @@ handleEditRota() {
       }
     }
 
-    var filtered,  idx, updateDt;
+    var filtered,  idx;
     var result = [];
 
         clonedArr.forEach(function(elem) {
@@ -204,7 +195,6 @@ handleEditRota() {
 
   render() {
     var { month, year,isEdit,values,show } = this.state;
-
     var { classes } = this.props;
     const staffList = [
       'VP',
@@ -212,11 +202,8 @@ handleEditRota() {
       'FA',
       'PA',
     ];
-    //console.log (' month '+ month);
-    days = [];
+    var days = '';
     days = this.getMonthDays(year, month);
-
-  //  console.log('monthlyview days ' + JSON.stringify(days));
 
     var monthName = moment.months(month);
     return (      

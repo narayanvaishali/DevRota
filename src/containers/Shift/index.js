@@ -18,30 +18,23 @@ class ShiftCell extends Component {
   }
 
   componentWillMount() { 
-    //this.referenceData(null);
+    this.referenceData(null);   
   }
 
-componentWillUnmount() {
-   // database.ref.set(null);
-    this.forceUpdate();
-   }
-
-   componentDidMount(){
-        this.forceUpdate();
-        this.referenceData(null);
-   }
-
   componentWillReceiveProps(nextProps) {
-    // console.log('referenceData :  ' + JSON.stringify(this.props.days));
     this.referenceData(nextProps.date);
+  }
+  componentWillUnmount() {
+    //database.ref.set(null);
   }
 
   referenceData(thedate) {
     var {classes, user, shift, month, year,date, day,days} = this.props;
-    var newdt = (thedate === null || thedate === undefined) ? date : thedate;
-    var  matchingKey, snapshotexists = false; 
-    var noData = false;
-    let currentComponent = this;
+     var newdt = (thedate === null || thedate === undefined) ? date : thedate;
+
+     var  matchingKey, snapshotexists = false; 
+     var noData = false;
+     let currentComponent = this;
      
       database.ref("schedules").once("value", snapshot => {
       var sch = snapshot.val();   
