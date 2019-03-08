@@ -1,50 +1,102 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Sidebar from './Sidebar';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ReportIcon from '@material-ui/icons/Report';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import StarIcon from '@material-ui/icons/Star';
+import SendIcon from '@material-ui/icons/Send';
+
 import styles from './styles';
 
-const Layout = ({
-  classes,
-  drawer,
-  title,
-  children,
-}) => (
-  <div className={classes.root}>
-    <AppBar position="absolute" className={classes.appBar}>
-      <Toolbar>
-        <Typography variant="h5" color="inherit" noWrap>
-          {title}
-        </Typography>
-      </Toolbar>
-    </AppBar>
-    {drawer ? <Sidebar /> : null}
-    <main
-      className={classNames({
-        [classes.content]: drawer,
-        [classes.main]: !drawer,
-      })}
-    >
-      <div className={classes.toolbar} />
-      {children}
-    </main>
-  </div>
+const Sidebar = ({ classes }) => (
+  <Drawer
+    variant="permanent"
+    classes={{
+      paper: classes.drawerPaper,
+    }}
+  >
+    <div className={classes.toolbar} />
+    <List>
+      <ListItem
+        button
+        component={Link}
+        to="/"
+      >
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItem>
+    </List>
+    <List>
+    <ListItem
+        button
+        component={Link}
+        to="/monthlyview"
+      >      
+        <ListItemIcon>
+            <StarIcon />
+        </ListItemIcon>
+        <ListItemText primary="Monthly View" />
+      </ListItem>
+    </List>
+    {/* <List>
+      <ListItem button
+        component={Link}
+        to="/weeklyview"
+       >
+        <ListItemIcon>
+          <StarIcon />
+        </ListItemIcon>
+        <ListItemText primary="Weekly View" />
+      </ListItem>
+      <ListItem
+        button
+      >
+        <ListItemIcon>
+          <SendIcon />
+        </ListItemIcon>
+        <ListItemText primary="Day View" />
+      </ListItem>
+    </List> 
+    <List>
+    <ListItem
+        button
+        component={Link}
+        to="/data"
+      >      
+        <ListItemIcon>
+            <StarIcon />
+        </ListItemIcon>
+        <ListItemText primary="generate data" />
+      </ListItem>
+    </List> */}
+    <Divider />
+    <List>
+      <ListItem
+        button
+        component={Link}
+        to="/logout"
+      >
+        <ListItemIcon>
+          <ReportIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </ListItem>
+    </List>
+  </Drawer>
 );
 
-Layout.defaultProps = {
-  title: 'Dev Rota',
-  drawer: true,
-};
+Sidebar.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+  routerHistory: PropTypes.object.isRequired, // eslint-disable-line
+}
 
-Layout.propTypes = {
-  title: PropTypes.string,
-  drawer: PropTypes.bool,
-  classes: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired,
-};
-
-export default withStyles(styles)(Layout);
+export default withStyles(styles)(Sidebar);
