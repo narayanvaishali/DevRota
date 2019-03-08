@@ -65,8 +65,8 @@ const Sidebar = ({ classes }) => (
         </ListItemIcon>
         <ListItemText primary="Day View" />
       </ListItem>
-    </List> */}
-   {/*  <List>
+    </List> 
+    <List>
     <ListItem
         button
         component={Link}
