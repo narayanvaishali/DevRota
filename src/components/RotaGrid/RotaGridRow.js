@@ -7,13 +7,15 @@ import EditRotaGridCell from './EditRotaGridCell';
 import styles from './styles';
 
 class RotaGridRow extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {
-      classes, staff, days, show, onChange1, month, year,
+      classes,
+      staff,
+      days,
+      show,
+      onChange1,
+      month,
+      year,
     } = this.props;
     const shifts = ['AM', 'PM'];
     return (
@@ -88,9 +90,13 @@ class RotaGridRow extends Component {
 }
 
 RotaGridRow.propTypes = {
-  classes: PropTypes.object.isRequired, // eslint-disable-line
   staff: PropTypes.string.isRequired,
   days: PropTypes.arrayOf(PropTypes.date).isRequired,
+  classes: PropTypes.shapeOf({}).isRequired,
+  show: PropTypes.bool.isRequired,
+  onChange1: PropTypes.func.isRequired,
+  month: PropTypes.number.isRequired,
+  year: PropTypes.number.isRequired,
 };
 
 export default withStyles(styles)(RotaGridRow);

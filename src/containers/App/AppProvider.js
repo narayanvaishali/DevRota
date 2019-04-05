@@ -10,7 +10,7 @@ const AppProvider = ({ children, theme }) => (
 
 AppProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.shapeOf({}).isRequired,
 };
 
 export default AppProvider;

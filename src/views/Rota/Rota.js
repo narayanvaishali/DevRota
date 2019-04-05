@@ -8,7 +8,6 @@ import Fab from '@material-ui/core/Fab';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
-import { Link } from 'react-router-dom';
 import Layout from '../Layout';
 import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
@@ -98,5 +97,9 @@ class Rota extends Component {
     );
   }
 }
+
+Rota.propTypes = {
+  classes: PropTypes.shapeOf({}).isRequired,
+};
 
 export default withStyles(styles)(Rota);

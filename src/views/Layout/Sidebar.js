@@ -13,7 +13,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ReportIcon from '@material-ui/icons/Report';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import StarIcon from '@material-ui/icons/Star';
-import SendIcon from '@material-ui/icons/Send';
 
 import styles from './styles';
 

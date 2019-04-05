@@ -4,24 +4,10 @@ import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
 import Layout from '../Layout';
-
 import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
-
-const Child = () => (
-  <div className="modal">
-      Hello, World!
-  </div>
-);
-
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month, 1);
@@ -39,12 +25,6 @@ class EditMonthlyView extends Component {
     this.state = {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      isEdit: false,
-      values: [
-        { name: 'H', id: 'H' },
-        { name: 'O', id: 'O' },
-        { name: 'A', id: 'A' },
-      ],
     };
     this.handleNavigation = this.handleNavigation.bind(this);
     this.handleEditRota = this.handleEditRota.bind(this);
@@ -61,15 +41,10 @@ class EditMonthlyView extends Component {
     });
   }
 
-  handleEditRota(year, month) {
-  /* this.setState({
-      isEdit: !this.state.isEdit
-    }) */
-  }
-
   render() {
     const {
-      month, year, isEdit, values,
+      month,
+      year,
     } = this.state;
     const { classes } = this.props;
     const staffList = [
@@ -79,9 +54,9 @@ class EditMonthlyView extends Component {
       'SF',
     ];
 
-
     const days = getMonthDays(year, month);
     const monthName = moment.months(month);
+    const { history } = this.props;
     return (
       <Layout title="Edit Rota  ----" drawer="true">
         <Paper>
@@ -111,7 +86,7 @@ class EditMonthlyView extends Component {
                 mini
                 aria-label="Save"
                 color="primary"
-                onClick={() => this.props.history.push('/staffs/add')}
+                onClick={() => history.push('/staffs/add')}
               />
             </Grid>
           </Grid>
@@ -125,5 +100,10 @@ class EditMonthlyView extends Component {
     );
   }
 }
+
+EditMonthlyView.propTypes = {
+  classes: PropTypes.shapeOf({ }).isRequired,
+  history: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(EditMonthlyView);

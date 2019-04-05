@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,14 +8,12 @@ import Fab from '@material-ui/core/Fab';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import styles from './styles';
 import RotaGrid from '../../components/RotaGrid';
 import Layout from '../Layout';
-// import EditMonthlyView from './EditMonthlyView';
 import { database } from '../../db';
 
 let clonedArr = [];
@@ -30,8 +28,6 @@ class MonthlyView extends Component {
       year: new Date().getFullYear(),
       isEdit: false,
       show: 'V',
-      offset: 0,
-      newscheduledata: [],
     };
     this.handleNavigation = this.handleNavigation.bind(this);
     this.handleEditRota = this.handleEditRota.bind(this);
@@ -44,75 +40,46 @@ class MonthlyView extends Component {
     database.ref.set(null);
   }
 
- getMonthDays = (year, month) => {
-   const date = new Date(year, month, 1);
-   const result = [];
-   while (date.getMonth() === month) {
-     result.push(new Date(date));
-     date.setDate(date.getDate() + 1);
-   }
-   return result;
- };
+  onChange1(newData) {
+    this.clonedArr.push(...newData);
+  }
 
-handleNavigation = (offset) => {
-  this.setState((prevState) => {
-    const newDate = moment().year(prevState.year).month(prevState.month).date(1)
-      .add(offset, 'M');
-    return {
-      month: newDate.month(),
-      year: newDate.year(),
-      isEdit: false,
-      show: 'V',
-    };
-  });
-}
+  getMonthDays = (year, month) => {
+    const date = new Date(year, month, 1);
+    const result = [];
+    while (date.getMonth() === month) {
+      result.push(new Date(date));
+      date.setDate(date.getDate() + 1);
+    }
+    return result;
+  };
 
-handleEditRota() {
-  this.setState({
-    isEdit: !this.state.isEdit,
-  });
-  this.state.isEdit ? this.setState({ show: 'E' }) : this.setState({ show: 'V' });
-}
-
-onChange1(newData) {
-  this.clonedArr.push(...newData);
-}
+  handleNavigation = (offset) => {
+    this.setState((prevState) => {
+      const newDate = moment().year(prevState.year).month(prevState.month).date(1)
+        .add(offset, 'M');
+      return {
+        month: newDate.month(),
+        year: newDate.year(),
+        isEdit: false,
+        show: 'V',
+      };
+    });
+  }
 
   handleSave = () => {
-    // console.log('clonedArr  : ' + JSON.stringify(clonedArr));
-
-    const getMatchingKey = (user, date, day, shift, val) => {
-      // console.log('here func : ' + user + ' '+ date + ' '+ day);
-
-      let matchingKey;
-      database.ref('schedules').once('value', (snapshot) => {
-        const sch = snapshot.val();
-        if (shift === 'AM') {
-          matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date && sch[key].day === day && sch[key].shift_AM != val));
-        } else {
-          matchingKey = Object.keys(sch).find(key => (sch[key].name === user && sch[key].date === date && sch[key].day === day && sch[key].shift_PM != val));
-        }
-      });
-      return matchingKey;
-    };
-    const getScheduledata = (id, done) => {
-      db.ref(`schedules/${id}`).once('value', (snapshot) => {
-        const schedule = snapshot.val();
-        done(schedule);
-      });
-    };
     const updateRota = (id, value, shift, done) => {
       if (shift === 'AM') {
         db.ref(`schedules/${id}`)
           .update({ shift_AM: value })
-          .then((res) => { done(false); })
+          .then(() => { done(false); })
           .catch((err) => {
             done(err, undefined);
           });
       } else {
         db.ref(`schedules/${id}`)
           .update({ shift_PM: value })
-          .then((res) => { done(false); })
+          .then(() => { done(false); })
           .catch((err) => {
             done(err, undefined);
           });
@@ -120,12 +87,12 @@ onChange1(newData) {
     };
 
     const addSchedule = (arr, done) => {
-      for (let i = 0; i < arr.length; i++) {
+      arr.forEach((sch) => {
         db.ref('schedules')
-          .push(arr[i])
+          .push(sch)
           .then(res => done(false, res))
           .catch(err => done(err, undefined));
-      }
+      });
     };
 
     let filtered; let
@@ -133,66 +100,80 @@ onChange1(newData) {
     const result = [];
 
     clonedArr.forEach((elem) => {
-      if ((elem.id != null) || (elem.id != undefined)) {
-        filtered = clonedArr.filter(hero => hero.id == elem.id);
+      if ((elem.id != null) || (elem.id !== undefined)) {
+        filtered = clonedArr.filter(hero => hero.id === elem.id);
         if (filtered !== undefined) {
           filtered.forEach((e) => {
-            updateDt = updateRota(e.id, e.val, e.shift, (err, response) => {
-              // console.log(response);
+            updateRota(e.id, e.val, e.shift, (err, response) => {
+              console.log(err, response); // eslint-disable-line
             });
           });
         }
       } else {
         idx = -1;
-        // console.log('result : ' + JSON.stringify(result));
-        for (var i = 0; i < clonedArr.length; i++) {
-          /* for(var name in clonedArr[i]) r += name + " :: " + clonedArr[i][name] + ", ";
-                            r += "\n"; */
-          if ((elem.name === clonedArr[i].name && elem.date === clonedArr[i].date && elem.day === clonedArr[i].day && elem.shift !== clonedArr[i].shift)) {
-            // console.log('val  ' +  elem.val + ' shift ' + elem.shift + ' shift PM ' + clonedArr[i].shift_PM + ' shift AM ' + clonedArr[i].shift_AM  );
-            // console.log();
-
-            idx = result.findIndex(x => (x.name === clonedArr[i].name && x.date === clonedArr[i].date && x.day === clonedArr[i].day));
-            // console.log('idx  '+ idx);
-
-            if (idx != -1) {
+        // TODO: logic within the loop is complex... needs to be simplified
+        for (let i = 0; i < clonedArr.length; i++) { // eslint-disable-line
+          if ((elem.name === clonedArr[i].name && elem.date === clonedArr[i].date && elem.day === clonedArr[i].day && elem.shift !== clonedArr[i].shift)) { // eslint-disable-line
+            idx = result.findIndex(x => (x.name === clonedArr[i].name && x.date === clonedArr[i].date && x.day === clonedArr[i].day)); // eslint-disable-line
+            if (idx !== -1) {
               if (elem.shift === 'AM') result[idx].shift_AM = elem.val;
               else result[idx].shift_PM = elem.val;
             } else if (elem.shift === 'AM') {
               result.push({
-                id: null, date: elem.date, name: elem.name, day: elem.day, shift_AM: elem.val, shift_PM: clonedArr[i].val,
+                id: null,
+                date: elem.date,
+                name: elem.name,
+                day: elem.day,
+                shift_AM: elem.val,
+                shift_PM: clonedArr[i].val,
               });
             } else {
               result.push({
-                id: null, date: elem.date, name: elem.name, day: elem.day, shift_PM: elem.val, shift_AM: clonedArr[i].val,
+                id: null,
+                date: elem.date,
+                name: elem.name,
+                day: elem.day,
+                shift_PM: elem.val,
+                shift_AM: clonedArr[i].val,
               });
             }
           }
         }
       }
     });
-    if (result != undefined) {
-      const a = addSchedule(result, (err, response) => {
-        // console.log(response);
-      });
+    if (result !== undefined) {
+      addSchedule(result, () => { });
     }
+
+    const { isEdit } = this.state;
     this.setState({
-      isEdit: !this.state.isEdit,
+      isEdit: !isEdit,
+      show: isEdit ? 'E' : 'V',
     });
-    this.state.isEdit ? this.setState({ show: 'E' }) : this.setState({ show: 'V' }); clonedArr = [];
+  }
+
+  handleEditRota() {
+    const { isEdit } = this.state;
+    this.setState({
+      isEdit: !isEdit,
+      show: isEdit ? 'E' : 'V',
+    });
   }
 
   handleCancel() {
     clonedArr = [];
+    const { isEdit } = this.state;
     this.setState({
-      isEdit: !this.state.isEdit,
+      isEdit: !isEdit,
+      show: isEdit ? 'E' : 'V',
     });
-    this.state.isEdit ? this.setState({ show: 'E' }) : this.setState({ show: 'V' });
   }
 
   render() {
     const {
-      month, year, isEdit, values, show,
+      month,
+      year,
+      show,
     } = this.state;
     const { classes } = this.props;
     const staffList = [
@@ -208,7 +189,7 @@ onChange1(newData) {
     return (
       <Layout title="Rota" drawer="true">
         <Paper>
-          {this.state.show === 'V'
+          {show === 'V'
             ? (
               <Grid container justify="space-between" className={classes.titleContainer}>
                 <Grid item>
@@ -313,5 +294,9 @@ onChange1(newData) {
     );
   }
 }
+
+MonthlyView.propTypes = {
+  classes: PropTypes.shapeOf({}).isRequired,
+};
 
 export default (withStyles(styles)(MonthlyView));
