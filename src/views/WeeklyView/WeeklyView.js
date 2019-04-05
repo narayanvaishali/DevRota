@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -11,7 +11,6 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import Layout from '../Layout';
 import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
-import { Link } from 'react-router-dom';
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month, 1);
@@ -22,36 +21,7 @@ const getMonthDays = (year, month) => {
   }
   return result;
 };
-/*
-const getWeekDays = (year, month) => {
-    var startDate = moment([year, month])
-    var firstDay = moment(startDate).startOf('month');
-    var endDay = moment(startDate).endOf('month');
 
-    //# Create a range for the month we can iterate through
-    var monthRange = moment.range(firstDay, endDay)
-
-    //# Get all the weeks during the current month
-    var weeks = [];
-      for (let mday of monthRange.by('days')) {
-        if (weeks.indexOf(mday.week()) === -1) {
-          weeks.push(mday.week());
-        }
-      }
-    var startOfWeek = moment().startOf('isoWeek');
-    var endOfWeek = moment().endOf('isoWeek');
-
-    var days = [];
-    var day = startOfWeek;
-
-    while (day <= endOfWeek) {
-        days.push(day.toDate());
-        day = day.clone().add(1, 'd');
-    }
-
-    return days;
-};
-*/
 class WeeklyView extends Component {
   constructor(props) {
     super(props);
@@ -84,7 +54,7 @@ class WeeklyView extends Component {
     ];
 
     const days = getMonthDays(year, month);
-  //  const days = getWeekDays(year, month);
+    //  const days = getWeekDays(year, month);
     const monthName = moment.months(month);
     return (
       <Layout title="Rota" drawer="true">
@@ -128,5 +98,9 @@ class WeeklyView extends Component {
     );
   }
 }
+
+WeeklyView.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+};
 
 export default withStyles(styles)(WeeklyView);

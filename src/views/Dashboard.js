@@ -14,7 +14,7 @@ const Dashboard = () => (
           return <pre>{JSON.stringify(error, null, 2)}</pre>;
         }
         return <h1>{data}</h1>;
-      } }
+      }}
     </Shift>
 
     <Shift user="VP" date="20181216" shift="AM">
@@ -25,9 +25,8 @@ const Dashboard = () => (
           return <pre>{JSON.stringify(error, null, 2)}</pre>;
         }
         return <h1>{data}</h1>;
-      } }
+      }}
     </Shift>
-
   </Layout>
 );
 

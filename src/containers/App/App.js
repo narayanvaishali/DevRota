@@ -4,7 +4,6 @@ import SecureRoute from '../../components/SecureRoute';
 // Views
 import Dashboard from '../../views/Dashboard';
 import Login, { Logout } from '../../views/Login';
-import Rota from '../../views/Rota';
 import MonthlyView from '../../views/MonthlyView';
 import WeeklyView from '../../views/WeeklyView';
 import CreateData from '../../views/Data/CreateData';

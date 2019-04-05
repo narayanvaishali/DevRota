@@ -11,7 +11,6 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import Layout from '../Layout';
 import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
-import { Link } from 'react-router-dom';
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month, 1);
@@ -98,5 +97,9 @@ class Rota extends Component {
     );
   }
 }
+
+Rota.propTypes = {
+  classes: PropTypes.shapeOf({}).isRequired,
+};
 
 export default withStyles(styles)(Rota);
