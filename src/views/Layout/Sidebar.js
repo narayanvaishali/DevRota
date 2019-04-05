@@ -38,18 +38,18 @@ const Sidebar = ({ classes }) => (
       </ListItem>
     </List>
     <List>
-    <ListItem
+      <ListItem
         button
         component={Link}
         to="/monthlyview"
-      >      
+      >
         <ListItemIcon>
-            <StarIcon />
+          <StarIcon />
         </ListItemIcon>
         <ListItemText primary="Monthly View" />
       </ListItem>
     </List>
-   {/* <List>
+    {/* <List>
       <ListItem button>
         <ListItemIcon>
           <StarIcon />
@@ -70,7 +70,7 @@ const Sidebar = ({ classes }) => (
         button
         component={Link}
         to="/data"
-      >      
+      >
         <ListItemIcon>
             <StarIcon />
         </ListItemIcon>
@@ -96,6 +96,6 @@ const Sidebar = ({ classes }) => (
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
   routerHistory: PropTypes.object.isRequired, // eslint-disable-line
-}
+};
 
 export default withStyles(styles)(Sidebar);

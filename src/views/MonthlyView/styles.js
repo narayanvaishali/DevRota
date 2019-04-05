@@ -3,7 +3,7 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   buttonMarginDDL: {
-    margin: theme.spacing.unit*1,
+    margin: theme.spacing.unit * 1,
   },
   titleContainer: {
     padding: '10px',
@@ -12,8 +12,8 @@ const styles = theme => ({
     marginLeft: `${theme.spacing.unit * 2}px`,
   },
   rotaScroller: {
-    width: '100%', 
-    overflow: 'scroll' 
+    width: '100%',
+    overflow: 'scroll',
   },
 });
 

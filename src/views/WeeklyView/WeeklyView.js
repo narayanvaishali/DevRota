@@ -8,10 +8,10 @@ import Fab from '@material-ui/core/Fab';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
+import { Link } from 'react-router-dom';
 import Layout from '../Layout';
 import RotaGrid from '../../components/RotaGrid';
 import styles from './styles';
-import { Link } from 'react-router-dom';
 
 const getMonthDays = (year, month) => {
   const date = new Date(year, month, 1);
@@ -84,7 +84,7 @@ class WeeklyView extends Component {
     ];
 
     const days = getMonthDays(year, month);
-  //  const days = getWeekDays(year, month);
+    //  const days = getWeekDays(year, month);
     const monthName = moment.months(month);
     return (
       <Layout title="Rota" drawer="true">

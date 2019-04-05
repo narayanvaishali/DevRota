@@ -1,9 +1,9 @@
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 import styles from './styles';
 
 class Register extends Component {
@@ -13,7 +13,7 @@ class Register extends Component {
       titleText,
       subtitleText,
       primaryBtnText,
-      primaryBtnLink
+      primaryBtnLink,
     } = this.props;
 
     const Title = (
@@ -26,7 +26,7 @@ class Register extends Component {
       <Typography
         className={classes.white}
         variant="subheading"
-        style={{ fontWeight: 500, fontSize: "22px", marginBottom: "1.35em" }}
+        style={{ fontWeight: 500, fontSize: '22px', marginBottom: '1.35em' }}
         gutterBottom
       >
         {subtitleText}
@@ -40,7 +40,7 @@ class Register extends Component {
         <Button
           title={primaryBtnText}
           className={classes.invertedBtn}
-          style={{ width: "192px" }}
+          style={{ width: '192px' }}
           component={PrimaryLink}
         >
           {primaryBtnText}
@@ -51,14 +51,15 @@ class Register extends Component {
       <div
         className={classes.parallax}
         style={{
-          backgroundImage: `linear-gradient(rgb(148, 132, 223), rgba(13, 97, 146, 0.89))`,
-          minHeight: "100vh"
-        }}>
+          backgroundImage: 'linear-gradient(rgb(148, 132, 223), rgba(13, 97, 146, 0.89))',
+          minHeight: '100vh',
+        }}
+      >
         {titleText && Title}
         {subtitleText && Subtitle}
 
         {primaryBtnText ? (
-          <Grid container style={{ width: "100%" }} spacing={16}>
+          <Grid container style={{ width: '100%' }} spacing={16}>
             {primaryBtnText && primaryBtnLink ? PrimaryBtn : null}
           </Grid>
         ) : null}

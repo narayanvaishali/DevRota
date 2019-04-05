@@ -10,27 +10,29 @@ class RotaGridCell extends Component {
     super(props);
   }
 
-  render ()
-  {
-      var {classes, user, shift, month, year,dateKey, day,days} = this.props;
-      return(
-            <Shift classes={classes} user={user} date={dateKey} day={day} shift={shift} month={month} year={year} days={days}>
-                  {({ loading, error, data, id }) => {
+  render() {
+    const {
+      classes, user, shift, month, year, dateKey, day, days,
+    } = this.props;
+    return (
+      <Shift classes={classes} user={user} date={dateKey} day={day} shift={shift} month={month} year={year} days={days}>
+        {({
+          loading, error, data, id,
+        }) => {
+          if (loading) return <td>Loading...</td>;
+          if (error) return <td>Error...</td>;
 
-                    if (loading) return <td>Loading...</td>;
-                    if (error) return <td>Error...</td>;
+          const blockClasses = classNames({
+            [classes.rotaBlock]: true,
+            [classes[data]]: true,
+          });
 
-                    const blockClasses = classNames({
-                      [classes.rotaBlock]: true,
-                      [classes[data]]: true,
-                    });
+          return (
+            <td key={id}><a className={blockClasses}>{data}</a></td>);
+        } }
+      </Shift>
 
-                    return (
-                      <td key={id}><a className={blockClasses} >{data}</a></td>);
-                  } }
-            </Shift>
-
-      );
+    );
   }
 }
 /* var RotaGridCell = (
