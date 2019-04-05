@@ -27,8 +27,7 @@ class Register extends Component {
         className={classes.white}
         variant="subheading"
         style={{ fontWeight: 500, fontSize: '22px', marginBottom: '1.35em' }}
-        gutterBottom
-      >
+        gutterBottom>
         {subtitleText}
       </Typography>
     );
@@ -41,8 +40,7 @@ class Register extends Component {
           title={primaryBtnText}
           className={classes.invertedBtn}
           style={{ width: '192px' }}
-          component={PrimaryLink}
-        >
+          component={PrimaryLink}>
           {primaryBtnText}
         </Button>
       </Grid>
@@ -51,10 +49,10 @@ class Register extends Component {
       <div
         className={classes.parallax}
         style={{
-          backgroundImage: 'linear-gradient(rgb(148, 132, 223), rgba(13, 97, 146, 0.89))',
+          backgroundImage:
+            'linear-gradient(rgb(148, 132, 223), rgba(13, 97, 146, 0.89))',
           minHeight: '100vh',
-        }}
-      >
+        }}>
         {titleText && Title}
         {subtitleText && Subtitle}
 

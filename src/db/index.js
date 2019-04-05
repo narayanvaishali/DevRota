@@ -6,11 +6,12 @@ export const database = firebase.database();
 export const { auth } = firebase;
 export const { LOCAL, SESSION, NONE } = auth.Auth.Persistence;
 
-export const getUser = () => new Promise((resolve) => {
-  auth().onAuthStateChanged((user) => {
-    resolve(user);
+export const getUser = () =>
+  new Promise(resolve => {
+    auth().onAuthStateChanged(user => {
+      resolve(user);
+    });
   });
-});
 
 export default {
   auth,

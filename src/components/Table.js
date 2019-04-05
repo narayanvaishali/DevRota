@@ -42,31 +42,22 @@ class Table extends Component {
           </tr>
         </thead>
         <tbody>
-          { materials.filter(m => m.day === day).map(row => (
-            <tr>
-              <td>
-                {row.name}
-              </td>
-              <td>
-                {row.shift_AM}
-              </td>
-              <td>
-                {row.shift_PM}
-              </td>
-            </tr>
-          ))}
+          {materials
+            .filter(m => m.day === day)
+            .map(row => (
+              <tr>
+                <td>{row.name}</td>
+                <td>{row.shift_AM}</td>
+                <td>{row.shift_PM}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     );
     return (
       <tr>
-        <td>
-          { displayColData(4) }
-        </td>
-        <td>
-          { displayColData(10) }
-        </td>
-
+        <td>{displayColData(4)}</td>
+        <td>{displayColData(10)}</td>
       </tr>
     );
   }

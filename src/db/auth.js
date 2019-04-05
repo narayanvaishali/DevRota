@@ -9,7 +9,7 @@ export function auth(email, pw) {
 export function logout() {
   return firebaseAuth()
     .signOut()
-    .then((res) => {
+    .then(res => {
       localStorage.removeItem('token');
     });
 }
